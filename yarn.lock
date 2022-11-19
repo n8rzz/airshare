@@ -264,6 +264,13 @@
     "@mantine/utils" "5.8.0"
     react-dropzone "14.2.3"
 
+"@mantine/ds@^5.8.0":
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/@mantine/ds/-/ds-5.8.0.tgz#c8311ef559f706b276ea2c7c6510c2af6cef1f46"
+  integrity sha512-68E8CAkmo9Z1qQB/OyCMlZ46Xk8bszZyQc4WV2nb6vA2i1b0WOW9usE4TY5FDbe0ifdksJEW+/yVyrLAGQi7qQ==
+  dependencies:
+    "@mantine/utils" "5.8.0"
+
 "@mantine/form@^5.8.0":
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/@mantine/form/-/form-5.8.0.tgz#a8eb9e65412f2b67f8031f5fe54833bb1ea1dacb"
@@ -306,6 +313,14 @@
   integrity sha512-D3LUE4V94iGkgLN23xfYe2zFZ5jcDmugB0cVS82m1q/crJOrMVKfpXesOE+mu+zUBKeOBVTcni66hXvGYFgiZg==
   dependencies:
     "@mantine/utils" "5.8.0"
+
+"@mantine/prism@^5.8.0":
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/@mantine/prism/-/prism-5.8.0.tgz#cda7db524a867abd86b1b8f68ac877c75e67b65a"
+  integrity sha512-5FmVX/HmLm+xPqxMQ7twn2QE96JZCY/r81k5nEDGINb17TEioU5ILhnGl05O31eS89N/g3L2vMh7n/bOiQIxJg==
+  dependencies:
+    "@mantine/utils" "5.8.0"
+    prism-react-renderer "^1.2.1"
 
 "@mantine/ssr@5.8.0":
   version "5.8.0"
@@ -2370,6 +2385,11 @@ prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
+
+prism-react-renderer@^1.2.1:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/prism-react-renderer/-/prism-react-renderer-1.3.5.tgz#786bb69aa6f73c32ba1ee813fbe17a0115435085"
+  integrity sha512-IJ+MSwBWKG+SM3b2SUfdrhC+gu01QkV2KmRQgREThBfSQRoufqRfxfHUxpG1WcaFjP+kojcFyO9Qqtpgt3qLCg==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
