@@ -2,8 +2,8 @@ import react from "react";
 
 interface IProps {}
 
-export const PassangersPage: React.FC<IProps> = (props) => {
-  return <h2>PassangersPage</h2>;
+export const PassengersPage: React.FC<IProps> = (props) => {
+  return <h2>PassengersPage</h2>;
 };
 
-PassangersPage.displayName = "PassangersPage";
+PassengersPage.displayName = "PassengersPage";

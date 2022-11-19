@@ -1,5 +1,6 @@
 import { createGetInitialProps } from "@mantine/next";
 import Document, { Head, Html, Main, NextScript } from "next/document";
+import { AppHeader } from "../src/components/shared/app-header/AppHeader";
 
 const getInitialProps = createGetInitialProps();
 

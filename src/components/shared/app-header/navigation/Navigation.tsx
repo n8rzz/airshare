@@ -159,7 +159,7 @@ export const Navigation: React.FC<IProps> = (props) => {
                 </div>
               </HoverCard.Dropdown> */}
             </HoverCard>
-            <Link href={Route.Passangers} className={classes.link}>
+            <Link href={Route.Passengers} className={classes.link}>
               Passengers
             </Link>
             <Link href={Route.Schedule} className={classes.link}>
@@ -213,7 +213,7 @@ export const Navigation: React.FC<IProps> = (props) => {
           </UnstyledButton>
           {/* <Collapse in={linksOpened}>{links}</Collapse> */}
 
-          <Link href={Route.Passangers} className={classes.link}>
+          <Link href={Route.Passengers} className={classes.link}>
             Passengers
           </Link>
 
