@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 import { Route } from "./AppHeader.constants";
+import { Navigation } from "./navigation/Navigation";
 
 interface IProps {}
 
@@ -13,26 +14,7 @@ export const AppHeader: React.FC<IProps> = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <nav>
-        <li>
-          <Link href={Route.Home}>AirShare.com</Link>
-        </li>
-        <li>
-          <Link href={Route.Flights}>Flights</Link>
-        </li>
-        <li>
-          <Link href={Route.Passangers}>Passangers</Link>
-        </li>
-        <li>
-          <Link href={Route.Schedule}>Schedule</Link>
-        </li>
-        <li>
-          <Link href={Route.Login}>Login</Link>
-        </li>
-        <li>
-          <Link href={Route.Register}>Register</Link>
-        </li>
-      </nav>
+      <Navigation />
     </React.Fragment>
   );
 };
