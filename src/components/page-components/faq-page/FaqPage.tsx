@@ -7,13 +7,16 @@ import {
   Container,
   Title,
 } from "@mantine/core";
-import { useStyles } from "./FaqPage.styles";
+import { useFaqPageStyles } from "./FaqPage.styles";
 
 const placeholder =
   "It can’t help but hear a pin drop from over half a mile away, so it lives deep in the mountains where there aren’t many people or Pokémon.";
 
-export function FaqPage() {
-  const { classes } = useStyles();
+interface IProps {}
+
+export const FaqPage: React.FC<IProps> = (props) => {
+  const { classes } = useFaqPageStyles();
+
   return (
     <div className={classes.wrapper}>
       <Container size="lg">
@@ -72,4 +75,4 @@ export function FaqPage() {
       </Container>
     </div>
   );
-}
+};

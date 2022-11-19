@@ -1,6 +1,6 @@
 import { createStyles } from "@mantine/core";
 
-export const useStyles = createStyles((theme) => ({
+export const useFaqPageStyles = createStyles((theme) => ({
   wrapper: {
     paddingTop: theme.spacing.xl * 2,
     paddingBottom: theme.spacing.xl * 2,
