@@ -2,6 +2,7 @@ import { createStyles } from "@mantine/core";
 
 export const useUiNumberStepperStyles = createStyles((theme) => ({
   wrapper: {
+    maxWidth: 150,
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -30,6 +31,10 @@ export const useUiNumberStepperStyles = createStyles((theme) => ({
         theme.colorScheme === "dark" ? "transparent" : theme.colors.gray[3],
       opacity: 0.8,
       backgroundColor: "transparent",
+    },
+    "&:hover": {
+      backgroundColor:
+        theme.colorScheme === "dark" ? "transparent" : theme.colors.gray[1],
     },
   },
 

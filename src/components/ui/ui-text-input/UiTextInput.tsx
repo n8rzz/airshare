@@ -1,7 +1,7 @@
-import { TextInput } from "@mantine/core";
+import { TextInput, TextInputProps } from "@mantine/core";
 import { useUiTextInputStyles } from "./UiTextInput.styles";
 
-interface IProps extends React.ComponentProps<typeof TextInput> {}
+interface IProps extends TextInputProps {}
 
 export const UiTextInput: React.FC<IProps> = (props) => {
   const { classes } = useUiTextInputStyles();

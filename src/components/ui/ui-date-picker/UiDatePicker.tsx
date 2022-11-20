@@ -1,7 +1,7 @@
-import { DatePicker } from "@mantine/dates";
+import { DatePicker, DatePickerProps } from "@mantine/dates";
 import { useUiDatePickerStyles } from "./UiDatePicker.styles";
 
-interface IProps extends React.ComponentProps<typeof DatePicker> {
+interface IProps extends DatePickerProps {
   /**
    * @optional
    * @default false

@@ -11,7 +11,7 @@ export const useUiSegmentedControlStyles = createStyles((theme) => ({
   },
 
   active: {
-    backgroundImage: theme.fn.gradient({ from: "pink", to: "orange" }),
+    backgroundImage: theme.fn.gradient({ to: "#0189C2", from: "#14213D" }),
   },
 
   control: {
