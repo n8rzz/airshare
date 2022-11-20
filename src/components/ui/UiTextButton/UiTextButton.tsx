@@ -5,9 +5,9 @@ interface IProps extends ButtonProps {}
 export const UiTextButton: React.FC<IProps> = (props) => {
   const {
     children = null,
-    color = "organge",
-    radius = "md",
-    size = "xl",
+    color = "orange",
+    radius = 0,
+    size = "sm",
     ...componentProps
   } = props;
 
