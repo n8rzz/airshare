@@ -17,6 +17,8 @@ export default async function handler(
 
     dbStatus = "ok";
   } catch (e) {
+    console.error(e);
+
     dbStatus = "error";
   }
 
