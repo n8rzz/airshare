@@ -9,10 +9,15 @@ import { UiSpace } from "../../ui/ui-space/UiSpace";
 import { UiTextInput } from "../../ui/ui-text-input/UiTextInput";
 import { UiComponentSize } from "../../ui/ui.constants";
 import { UiTextButton } from "../../ui/UiTextButton/UiTextButton";
+import {useSession} from "next-auth/react";
 
 interface IProps {}
 
 export const LandingPage: React.FC<IProps> = (props) => {
+  const { data: session } = useSession();
+
+  console.log(session);
+
   return (
     <div>
       <h2>Airshare.com</h2>

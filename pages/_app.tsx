@@ -7,11 +7,10 @@ import { theme } from "../src/components/ui/theme/theme";
 
 export default function App({
   Component,
-  pageProps: session,
-  ...pageProps
+  pageProps
 }: AppProps) {
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={pageProps.session}>
       <MantineProvider
         withGlobalStyles={true}
         withNormalizeCSS={true}
