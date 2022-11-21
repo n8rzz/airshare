@@ -1,6 +1,9 @@
+import * as dotenv from 'dotenv';
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import {NextApiRequest, NextApiResponse} from "next";
+
+dotenv.config();
 
 export const authOptions = {
   providers: [
@@ -12,4 +15,8 @@ export const authOptions = {
   ],
 };
 
-export default (req: NextApiRequest, res: NextApiResponse) => NextAuth(req, res, authOptions);
+console.log('---', process.env);
+
+const authHandler = (req: NextApiRequest, res: NextApiResponse) => NextAuth(req, res, authOptions);
+
+export default authHandler;

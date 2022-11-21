@@ -10,6 +10,7 @@ import { UiTextInput } from "../../ui/ui-text-input/UiTextInput";
 import { UiComponentSize } from "../../ui/ui.constants";
 import { UiTextButton } from "../../ui/UiTextButton/UiTextButton";
 import {useSession} from "next-auth/react";
+import {AccessDenied} from "../../shared/access-denied/AccessDenied";
 
 interface IProps {}
 
@@ -17,6 +18,10 @@ export const LandingPage: React.FC<IProps> = (props) => {
   const { data: session } = useSession();
 
   console.log(session);
+
+  if (!session) {
+    return <AccessDenied />;
+  }
 
   return (
     <div>
