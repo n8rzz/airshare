@@ -15,8 +15,6 @@ export const authOptions = {
   ],
 };
 
-console.log('---', process.env);
-
 const authHandler = (req: NextApiRequest, res: NextApiResponse) => NextAuth(req, res, authOptions);
 
 export default authHandler;
