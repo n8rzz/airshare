@@ -1,4 +1,4 @@
-import react from "react";
+import React from "react";
 import { UiContainer } from "../../ui/ui-container/UiContainer";
 import { UiDatePicker } from "../../ui/ui-date-picker/UiDatePicker";
 import { UiFlex } from "../../ui/ui-flex/UiFlex";
