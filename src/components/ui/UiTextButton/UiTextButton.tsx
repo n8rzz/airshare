@@ -1,13 +1,13 @@
-import { Button, ButtonProps } from "@mantine/core";
+import { Button, ButtonProps } from '@mantine/core';
 
 interface IProps extends ButtonProps {}
 
 export const UiTextButton: React.FC<IProps> = (props) => {
   const {
     children = null,
-    color = "orange",
+    color = 'orange',
     radius = 0,
-    size = "sm",
+    size = 'sm',
     ...componentProps
   } = props;
 
@@ -17,4 +17,5 @@ export const UiTextButton: React.FC<IProps> = (props) => {
     </Button>
   );
 };
-UiTextButton.displayName = "UiTextButton";
+
+UiTextButton.displayName = 'UiTextButton';

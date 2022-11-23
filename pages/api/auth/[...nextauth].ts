@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
-import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import {NextApiRequest, NextApiResponse} from "next";
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 dotenv.config();
 

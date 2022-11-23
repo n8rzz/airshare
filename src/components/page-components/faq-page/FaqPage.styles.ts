@@ -1,4 +1,4 @@
-import { createStyles } from "@mantine/core";
+import { createStyles } from '@mantine/core';
 
 export const useFaqPageStyles = createStyles((theme) => ({
   wrapper: {
@@ -9,14 +9,14 @@ export const useFaqPageStyles = createStyles((theme) => ({
   title: {
     marginBottom: theme.spacing.md,
     paddingLeft: theme.spacing.md,
-    color: theme.colorScheme === "dark" ? theme.white : theme.black,
+    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
   },
 
   item: {
     fontSize: theme.fontSizes.sm,
     color:
-      theme.colorScheme === "dark"
+      theme.colorScheme === 'dark'
         ? theme.colors.dark[1]
         : theme.colors.gray[7],
   },

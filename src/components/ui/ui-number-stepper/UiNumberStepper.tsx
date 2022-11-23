@@ -1,19 +1,13 @@
-import { useRef, useState } from "react";
+import { useRef, useState } from 'react';
 import {
-  createStyles,
   NumberInput,
   NumberInputHandlers,
   ActionIcon,
-} from "@mantine/core";
-import { IconPlus, IconMinus } from "@tabler/icons";
-import { useUiNumberStepperStyles } from "./UiNumberStepper.styles";
+} from '@mantine/core';
+import { IconPlus, IconMinus } from '@tabler/icons';
+import { useUiNumberStepperStyles } from './UiNumberStepper.styles';
 
 interface IProps {
-  /**
-   * @optional
-   * @default number
-   */
-  min?: number;
   /**
    * @optional
    * @default number
@@ -24,6 +18,11 @@ interface IProps {
    * @default number
    */
   maxWidth?: number;
+  /**
+   * @optional
+   * @default number
+   */
+  min?: number;
   /**
    * @optional
    * @default number
@@ -39,13 +38,13 @@ export const UiNumberStepper: React.FC<IProps> = (props) => {
 
   return (
     <div className={classes.wrapper}>
-      <ActionIcon<"button">
+      <ActionIcon<'button'>
         className={classes.control}
         disabled={value === min}
+        size={28}
+        variant={'transparent'}
         onClick={() => handlers.current?.decrement()}
         onMouseDown={(event) => event.preventDefault()}
-        size={28}
-        variant="transparent"
       >
         <IconMinus size={16} stroke={2} />
       </ActionIcon>
@@ -55,18 +54,18 @@ export const UiNumberStepper: React.FC<IProps> = (props) => {
         handlersRef={handlers}
         max={max}
         min={min}
-        onChange={setValue}
         value={value}
-        variant="unstyled"
+        variant={'unstyled'}
+        onChange={setValue}
       />
 
-      <ActionIcon<"button">
+      <ActionIcon<'button'>
         className={classes.control}
         disabled={value === max}
+        size={28}
+        variant={'transparent'}
         onClick={() => handlers.current?.increment()}
         onMouseDown={(event) => event.preventDefault()}
-        size={28}
-        variant="transparent"
       >
         <IconPlus size={16} stroke={2} />
       </ActionIcon>

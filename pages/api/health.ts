@@ -1,26 +1,26 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { Sequelize } from "sequelize";
-import { connectToDatabase } from "../../db/db.store";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { connectToDatabase } from '../../db/db.store';
 
-interface Data {}
+interface Data {
+}
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  let dbStatus = "unknown";
+  let dbStatus = 'unknown';
 
   try {
     const db = connectToDatabase();
 
     await db.authenticate();
 
-    dbStatus = "ok";
-  } catch (e) {
-    console.error(e);
+    dbStatus = 'ok';
+  } catch (error) {
+    console.error(error);
 
-    dbStatus = "error";
+    dbStatus = 'error';
   }
 
-  res.status(200).json({ app: "ok", database: dbStatus });
+  res.status(200).json({ app: 'ok', database: dbStatus });
 }

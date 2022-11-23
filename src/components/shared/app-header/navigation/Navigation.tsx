@@ -29,123 +29,123 @@ export const Navigation: React.FC<IProps> = (props) => {
 
   return (
     <Box pb={120}>
-      <Header height={60} px="md">
-        <Group position="apart" sx={{ height: '100%' }}>
+      <Header height={60} px={'md'}>
+        <Group position={'apart'} sx={{ height: '100%' }}>
           <MantineLogo size={30} />
           <Group
-            sx={{ height: '100%' }}
-            spacing={0}
             className={classes.hiddenMobile}
+            spacing={0}
+            sx={{ height: '100%' }}
           >
-            <Link href={Route.Home} className={classes.link}>
+            <Link className={classes.link} href={Route.Home}>
               Home
             </Link>
             <HoverCard
+              position={'bottom'}
+              radius={'md'}
+              shadow={'md'}
               width={600}
-              position="bottom"
-              radius="md"
-              shadow="md"
-              withinPortal
+              withinPortal={true}
             >
               <HoverCard.Target>
-                <Link href={Route.Flights} className={classes.link}>
-                  <Center inline>
-                    <Box component="span" mr={5}>
+                <Link className={classes.link} href={Route.Flights}>
+                  <Center inline={true}>
+                    <Box component={'span'} mr={5}>
                       Flights
                     </Box>
                   </Center>
                 </Link>
               </HoverCard.Target>
             </HoverCard>
-            <Link href={Route.Passengers} className={classes.link}>
+            <Link className={classes.link} href={Route.Passengers}>
               Passengers
             </Link>
-            <Link href={Route.Schedule} className={classes.link}>
+            <Link className={classes.link} href={Route.Schedule}>
               Schedule
             </Link>
           </Group>
 
           <Group className={classes.hiddenMobile}>
             {!session && (
-              <>
-                <Button variant="default" onClick={() => signIn()}>
+              <React.Fragment>
+                <Button variant={'default'} onClick={() => signIn()}>
                   Log in
                 </Button>
                 <Link href={Route.Register}>
                   <Button>Sign up</Button>
                 </Link>
-              </>
+              </React.Fragment>
             )}
             {session && (
-              <Button variant="default" onClick={() => signOut()}>
+              <Button variant={'default'} onClick={() => signOut()}>
                 Log Out
               </Button>
             )}
           </Group>
 
           <Burger
+            className={classes.hiddenDesktop}
             opened={drawerOpened}
             onClick={toggleDrawer}
-            className={classes.hiddenDesktop}
           />
         </Group>
       </Header>
 
       <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
-        size="100%"
-        padding="md"
-        title="Navigation"
         className={classes.hiddenDesktop}
+        opened={drawerOpened}
+        padding={'md'}
+        size={'100%'}
+        title={'Navigation'}
         zIndex={1000000}
+        onClose={closeDrawer}
       >
-        <ScrollArea sx={{ height: 'calc(100vh - 60px)' }} mx="-md">
+        <ScrollArea mx={'-md'} sx={{ height: 'calc(100vh - 60px)' }}>
           <Divider
-            my="sm"
             color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'}
+            my={'sm'}
           />
 
-          <Link href={Route.Home} className={classes.link}>
+          <Link className={classes.link} href={Route.Home}>
             Home
           </Link>
 
           <UnstyledButton className={classes.link}>
-            <Center inline>
-              <Box component="span" mr={5}>
+            <Center inline={true}>
+              <Box component={'span'} mr={5}>
                 Flights
               </Box>
             </Center>
           </UnstyledButton>
 
-          <Link href={Route.Passengers} className={classes.link}>
+          <Link className={classes.link} href={Route.Passengers}>
             Passengers
           </Link>
 
-          <Link href={Route.Schedule} className={classes.link}>
+          <Link className={classes.link} href={Route.Schedule}>
             Schedule
           </Link>
 
           <Divider
-            my="sm"
             color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'}
+            my={'sm'}
           />
 
-          <Group position="center" grow pb="xl" px="md">
+          <Group grow={true} pb={'xl'} position={'center'} px={'md'}>
             {session && (
-              <Button variant="default" onClick={() => signIn()}>
+              <Button variant={'default'} onClick={() => signIn()}>
                 Log in
               </Button>
             )}
             {!session && (
-              <>
-                <Button variant="default" onClick={() => signIn()}>
+              <React.Fragment>
+                <Button variant={'default'} onClick={() => signIn()}>
                   Log in
                 </Button>
                 <Link href={Route.Register}>
                   <Button>Sign up</Button>
                 </Link>
-              </>
+              </React.Fragment>
             )}
           </Group>
         </ScrollArea>

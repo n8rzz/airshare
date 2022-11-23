@@ -1,4 +1,4 @@
-import { Container, ContainerProps } from "@mantine/core";
+import { Container, ContainerProps } from '@mantine/core';
 
 interface IProps extends ContainerProps {}
 
@@ -8,4 +8,4 @@ export const UiContainer: React.FC<IProps> = (props) => {
   return <Container {...componentProps} />;
 };
 
-UiContainer.displayName = "UiContainer";
+UiContainer.displayName = 'UiContainer';

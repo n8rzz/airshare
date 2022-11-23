@@ -1,5 +1,5 @@
-import { DatePicker, DatePickerProps } from "@mantine/dates";
-import { useUiDatePickerStyles } from "./UiDatePicker.styles";
+import { DatePicker, DatePickerProps } from '@mantine/dates';
+import { useUiDatePickerStyles } from './UiDatePicker.styles';
 
 interface IProps extends DatePickerProps {
   /**
@@ -12,8 +12,8 @@ interface IProps extends DatePickerProps {
 export const UiDatePicker: React.FC<IProps> = (props) => {
   const {
     clearable = true,
-    label = "",
-    placeholder = "",
+    label = '',
+    placeholder = '',
     ...componentProps
   } = props;
   const { classes } = useUiDatePickerStyles();
@@ -21,12 +21,12 @@ export const UiDatePicker: React.FC<IProps> = (props) => {
   return (
     <DatePicker
       {...componentProps}
-      label={label}
-      placeholder={placeholder}
       classNames={classes}
       clearable={clearable}
+      label={label}
+      placeholder={placeholder}
     />
   );
 };
 
-UiDatePicker.displayName = "UiDatePicker";
+UiDatePicker.displayName = 'UiDatePicker';

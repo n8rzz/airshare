@@ -1,6 +1,6 @@
-import React from "react";
-import {useSession} from "next-auth/react";
-import {AccessDenied} from "../../shared/access-denied/AccessDenied";
+import React from 'react';
+import { useSession } from 'next-auth/react';
+import { AccessDenied } from '../../shared/access-denied/AccessDenied';
 
 interface IProps {}
 
@@ -14,4 +14,4 @@ export const SchedulePage: React.FC<IProps> = (props) => {
   return <h2>SchedulePage</h2>;
 };
 
-SchedulePage.displayName = "SchedulePage";
+SchedulePage.displayName = 'SchedulePage';

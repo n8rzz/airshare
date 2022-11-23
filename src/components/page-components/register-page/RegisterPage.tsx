@@ -1,4 +1,3 @@
-import react from "react";
 
 interface IProps {}
 
@@ -10,4 +9,4 @@ export const RegisterPage: React.FC<IProps> = (props) => {
   );
 };
 
-RegisterPage.displayName = "RegisterPage";
+RegisterPage.displayName = 'RegisterPage';

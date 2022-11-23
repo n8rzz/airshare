@@ -1,15 +1,15 @@
-import Head from "next/head";
-import { LoginPage } from "../../src/components/page-components/login-page/LoginPage";
-import { AppHeader } from "../../src/components/shared/app-header/AppHeader";
+import React from 'react';
+import Head from 'next/head';
+import { LoginPage } from '../../src/components/page-components/login-page/LoginPage';
 
 export default function Home() {
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>Login | Airshare.com</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link href={'/favicon.ico'} rel={'icon'}/>
       </Head>
-      <LoginPage />
-    </>
+      <LoginPage/>
+    </React.Fragment>
   );
 }

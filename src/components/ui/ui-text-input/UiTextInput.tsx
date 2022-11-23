@@ -1,5 +1,5 @@
-import { TextInput, TextInputProps } from "@mantine/core";
-import { useUiTextInputStyles } from "./UiTextInput.styles";
+import { TextInput, TextInputProps } from '@mantine/core';
+import { useUiTextInputStyles } from './UiTextInput.styles';
 
 interface IProps extends TextInputProps {}
 

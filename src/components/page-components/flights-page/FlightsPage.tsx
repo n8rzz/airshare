@@ -1,14 +1,11 @@
-import react from "react";
-import { UiFlex } from "../../ui/ui-flex/UiFlex";
-import { UiSpace } from "../../ui/ui-space/UiSpace";
-import { UiTextButton } from "../../ui/UiTextButton/UiTextButton";
-import { FlightListItem } from "./flight-list-item/FlightListItem";
+import React from 'react';
+import { UiTextButton } from '../../ui/UiTextButton/UiTextButton';
+import { FlightListItem } from './flight-list-item/FlightListItem';
 
-interface IProps {}
+interface IProps {
+}
 
 export const FlightsPage: React.FC<IProps> = (props) => {
-  // const mockListItems =
-
   return (
     <div>
       <div>CURRENT SEARCH PARAMS</div>
@@ -19,8 +16,8 @@ export const FlightsPage: React.FC<IProps> = (props) => {
       </div>
 
       <ul>
-        {[...Array(10)].map((v, i) => (
-          <FlightListItem key={i} />
+        {[...Array(10)].map((_, index) => (
+          <FlightListItem key={index}/>
         ))}
       </ul>
 
@@ -29,4 +26,4 @@ export const FlightsPage: React.FC<IProps> = (props) => {
   );
 };
 
-FlightsPage.displayName = "FlightsPage";
+FlightsPage.displayName = 'FlightsPage';

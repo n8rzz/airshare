@@ -1,9 +1,9 @@
-import { MantineColor, MantineSize } from "@mantine/styles";
+import { MantineSize } from '@mantine/styles';
 
 export const UiComponentSize: Record<string, MantineSize> = {
-  Large: "lg",
-  Medium: "md",
-  Small: "sm",
-  XtraLarge: "xl",
-  XtraSmall: "xs",
+  Large: 'lg',
+  Medium: 'md',
+  Small: 'sm',
+  XtraLarge: 'xl',
+  XtraSmall: 'xs',
 };

@@ -1,16 +1,15 @@
-import Head from "next/head";
-import { FaqPage } from "../../src/components/page-components/faq-page/FaqPage";
-import { FlightsPage } from "../../src/components/page-components/flights-page/FlightsPage";
-import { AppHeader } from "../../src/components/shared/app-header/AppHeader";
+import React from 'react';
+import Head from 'next/head';
+import { FaqPage } from '../../src/components/page-components/faq-page/FaqPage';
 
 export default function Home() {
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>FAQ | Airshare.com</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link href={'/favicon.ico'} rel={'icon'}/>
       </Head>
-      <FaqPage />
-    </>
+      <FaqPage/>
+    </React.Fragment>
   );
 }
