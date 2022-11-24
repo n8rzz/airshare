@@ -1,22 +1,22 @@
 import React from 'react';
-import { getSession, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
+import { NextPageContext } from 'next';
+import { Session } from 'next-auth';
 import { AccessDenied } from '../../shared/access-denied/AccessDenied';
 
 interface IProps {
-  session: unknown;
+  session: Session | null;
 }
 
 export const PassengersPage: React.FC<IProps> = (props) => {
-  const { data: session } = useSession();
-
-  if (!session) {
+  if (!props.session) {
     return <AccessDenied/>;
   }
 
   return <h2>PassengersPage</h2>;
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context)
 
   return {
