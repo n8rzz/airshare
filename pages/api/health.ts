@@ -1,5 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { connectToDatabase } from '../../db/db.store';
+import { PostgresDataStore } from '../../src/domain/data-store/PostgresData.store';
+
+export enum DbStatus {
+  Error = 'Error',
+  Ok = 'Ok',
+  Unknown = 'Unknown'
+}
 
 interface Data {
 }
@@ -8,18 +14,19 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  let dbStatus = 'unknown';
+  let dbStatus = DbStatus.Unknown;
 
   try {
-    const db = connectToDatabase();
+    const store = new PostgresDataStore();
 
-    await db.authenticate();
+    await store.init();
+    await store.authenticate();
 
-    dbStatus = 'ok';
+    dbStatus = DbStatus.Ok;
   } catch (error) {
     console.error(error);
 
-    dbStatus = 'error';
+    dbStatus = DbStatus.Error;
   }
 
   res.status(200).json({ app: 'ok', database: dbStatus });

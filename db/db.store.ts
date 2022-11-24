@@ -1,5 +1,5 @@
-import * as pg from "pg";
-import { Sequelize } from "sequelize";
+import * as pg from 'pg';
+import { Sequelize } from 'sequelize';
 
 const db = new Sequelize(
   process.env.DB_NAME as string,
@@ -7,7 +7,7 @@ const db = new Sequelize(
   process.env.DB_PASSWORD as string,
   {
     host: process.env.DB_HOST as string,
-    dialect: "postgres",
+    dialect: 'postgres',
     dialectModule: pg,
   }
 );
