@@ -2,6 +2,7 @@ import * as pg from 'pg';
 import { Sequelize } from 'sequelize';
 
 export class PostgresDataStore {
+  // @ts-ignore
   public db: Sequelize;
 
   public init(): void {

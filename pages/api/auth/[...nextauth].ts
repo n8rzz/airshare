@@ -13,13 +13,14 @@ const authHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   await store.init();
 
   const authOptions = {
-    adapter: SequelizeAdapter(store.db),
+    adapter: SequelizeAdapter(store.db, { synchronize: false }),
     providers: [
       GoogleProvider({
         clientId: process.env.GOOGLE_ID as string,
         clientSecret: process.env.GOOGLE_SECRET as string,
       }),
     ],
+    debug: process.env.AUTH_DEBUG as unknown as boolean,
   };
 
   return NextAuth(req, res, authOptions);
