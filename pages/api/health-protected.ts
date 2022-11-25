@@ -1,20 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PostgresDataStore } from '../../src/domain/data-store/PostgresData.store';
+import { getSession } from 'next-auth/react';
 
 export enum DbStatus {
   Error = 'Error',
   Ok = 'Ok',
-  Unknown = 'Unknown'
+  Unknown = 'Unknown',
 }
 
 interface Data {
 }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+  const session = await getSession({ req });
   let dbStatus = DbStatus.Unknown;
+
+  if (!session) {
+    throw new Error('Unauthorized');
+  }
 
   try {
     const store = new PostgresDataStore();
@@ -29,5 +32,9 @@ export default async function handler(
     dbStatus = DbStatus.Error;
   }
 
-  res.status(200).json({ app: 'ok', database: dbStatus });
+  res.status(200).json({
+    app: 'ok',
+    auth: 'ok',
+    database: dbStatus,
+  });
 }
