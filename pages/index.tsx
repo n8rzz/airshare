@@ -7,9 +7,8 @@ export default function Home() {
     <React.Fragment>
       <Head>
         <title>Home | Airshare.com</title>
-        <link href={'/favicon.ico'} rel={'icon'} />
       </Head>
-      <LandingPage />
+      <LandingPage/>
     </React.Fragment>
   );
 }

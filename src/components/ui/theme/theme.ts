@@ -1,20 +1,17 @@
 import { MantineThemeOverride } from '@mantine/core';
 
 export const theme: MantineThemeOverride = {
+  fontFamily: '"Barlow", sans-serif',
+  fontFamilyMonospace: 'Monaco, Courier, monospace',
+  headings: {
+    // properties for all headings
+    fontWeight: 600,
+    fontFamily: '"Merriweather", serif',
+  },
   colorScheme: 'light',
   colors: {
     // https://coolors.co/04070c-14213d-d51013-fca311-21e151-0189c2-e49de9-53585b-fffeef
-    brand: [
-      '#04070c',
-      '#14213d',
-      '#d51013',
-      '#fca311',
-      '#21e151',
-      '#0189c2',
-      '#e49de9',
-      '#53585b',
-      '#fffeef',
-    ],
+    brand: ['#04070c', '#14213d', '#d51013', '#fca311', '#21e151', '#0189c2', '#e49de9', '#53585b', '#fffeef'],
     // named colors with 10 shades for each `brand` color
     richBlack: [
       '#ecf1f9',
