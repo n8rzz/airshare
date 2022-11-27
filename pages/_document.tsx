@@ -1,7 +1,7 @@
 import { createGetInitialProps } from '@mantine/next';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
-import { Fonts } from './_fonts';
+import { Fonts } from '../src/components/shared/fonts/Fonts';
 
 const getInitialProps = createGetInitialProps();
 

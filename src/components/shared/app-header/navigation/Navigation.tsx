@@ -12,14 +12,15 @@ import {
   ScrollArea,
   UnstyledButton,
 } from '@mantine/core';
-import { MantineLogo } from '@mantine/ds';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { Route } from '../AppHeader.constants';
 import { useStyles } from './Navigation.styles';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { UiTitle } from '../../../ui/ui-title/UiTitle';
 
-interface IProps {}
+interface IProps {
+}
 
 export const Navigation: React.FC<IProps> = (props) => {
   const { data: session } = useSession();
@@ -31,7 +32,7 @@ export const Navigation: React.FC<IProps> = (props) => {
     <Box pb={120}>
       <Header height={60} px={'md'}>
         <Group position={'apart'} sx={{ height: '100%' }}>
-          <MantineLogo size={30} />
+          <UiTitle order={1}>Airshare</UiTitle>
           <Group
             className={classes.hiddenMobile}
             spacing={0}
