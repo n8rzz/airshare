@@ -1,0 +1,24 @@
+version: "3.4"
+
+volumes:
+  air_share_data:
+    name: air_share_data
+
+services:
+  db:
+    image: "postgres:12"
+    container_name: "db"
+    environment:
+      - POSTGRES_DB=air_share_development
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - air_share_data:/var/lib/postgresql/air_share_data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      start_period: 10s
+      timeout: 4s
+      retries: 3
