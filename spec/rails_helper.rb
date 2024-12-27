@@ -5,6 +5,7 @@ require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'capybara/rspec'
 require 'database_cleaner'
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -27,14 +28,15 @@ Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f 
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
-  abort e.to_s.strip
+  puts e.to_s.strip
+  exit 1
 end
 RSpec.configure do |config|
   # Configure fixtures (though we're primarily using FactoryBot)
-  config.fixture_path = Rails.root.join('spec/fixtures')
+  config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # We're using DatabaseCleaner instead
-  config.use_transactional_fixtures = false
+  config.use_transactional_fixtures = true
 
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
@@ -43,8 +45,35 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   # Include Devise test helpers
+  config.include Devise::Test::IntegrationHelpers, type: :system
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::ControllerHelpers, type: :controller
+
+  # Configure Capybara
+  config.before(:each, type: :system) do
+    driven_by :selenium_chrome_headless
+  end
+  
+  # Configure DatabaseCleaner
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, type: :system) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end
 
 # Configure Shoulda Matchers

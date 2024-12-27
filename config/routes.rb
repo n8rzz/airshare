@@ -1,5 +1,20 @@
 Rails.application.routes.draw do
   devise_for :users
+  
+  namespace :admin do
+    root to: 'dashboard#index'
+    resources :users do
+      collection do
+        get :search
+        get :admins
+        get :regular_users
+      end
+      member do
+        patch :toggle_admin
+      end
+    end
+  end
+  
   root "pages#home"
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
