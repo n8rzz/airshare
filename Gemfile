@@ -21,7 +21,6 @@ gem "tailwindcss-rails"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
-
 group :development, :test do
   gem "database_cleaner", "~> 2.0"
   gem "factory_bot_rails", "~> 6.4"
@@ -31,6 +30,9 @@ end
 
 group :development do
   gem "web-console"
+  gem "guard"
+  gem "guard-rspec"
+  gem "guard-bundler"
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
