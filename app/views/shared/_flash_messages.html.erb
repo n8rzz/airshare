@@ -1,7 +1,7 @@
 <% flash.each do |name, msg| %>
   <% if msg.is_a?(String) %>
-    <div class="<%= name == 'notice' ? 'bg-green-50 text-green-800 border-green-400' : 'bg-red-50 text-red-800 border-red-400' %> px-4 py-3 rounded relative border mb-4" role="alert">
-      <div class="flex">
+    <div class="<%= name == 'notice' ? 'bg-green-50 text-green-800 border-green-400' : 'bg-red-50 text-red-800 border-red-400' %> px-4 py-3 rounded relative border mb-4 relative" role="alert">
+      <div class="flex items-center">
         <div class="py-1">
           <% if name == 'notice' %>
             <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

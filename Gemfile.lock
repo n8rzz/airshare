@@ -130,6 +130,7 @@ GEM
       logger
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
+    foreman (0.88.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
@@ -364,6 +365,7 @@ DEPENDENCIES
   devise (~> 4.9)
   dotenv-rails (~> 3.1)
   factory_bot_rails (~> 6.4)
+  foreman
   importmap-rails
   omniauth (~> 2.1)
   omniauth-google-oauth2 (~> 1.1)

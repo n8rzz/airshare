@@ -1,20 +1,26 @@
 # frozen_string_literal: true
 
-# Assuming you have not yet modified this file, each configuration option below
-# is set to its default value. Note that some are commented out while others
-# are not: uncommented lines are intended to protect your configuration from
-# breaking changes in upgrades (i.e., in the event that future versions of
-# Devise change the default values for those options).
-#
-# Use this hook to configure devise mailer, warden hooks and so forth.
-# Many of these configuration options can be set straight in your model.
+# Assuming you have defined ENV['GOOGLE_CLIENT_ID'] and ENV['GOOGLE_CLIENT_SECRET']
 Devise.setup do |config|
+  # ==> OmniAuth
+  # Add a new OmniAuth provider. Check the wiki for more information on setting
+  # up on your models and hooks.
+  config.omniauth :google_oauth2, 
+                  ENV['GOOGLE_CLIENT_ID'],
+                  ENV['GOOGLE_CLIENT_SECRET'],
+                  {
+                    scope: 'email,profile',
+                    prompt: 'select_account',
+                    image_aspect_ratio: 'square',
+                    image_size: 50
+                  }
+
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'c44cbcbabfce2fc0dff38a87e7f0eb050f6a98e62c29bb178e2d63501221f2fc2c0224ec9fb9321bab6bb120814edf6675e1e88c6f870acb74b19ea00f21efdc'
+  # config.secret_key = 'xxx'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -126,7 +132,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = 'ab2967e59630933d93b66c098d7cfb720c9998581b81be39d4c0f7544df1b80d87f617777aaaed41ac4a1e564b6c22fbd7950e480140fc1d1c00e5d3e55753c9'
+  # config.pepper = 'xxx'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -155,7 +161,7 @@ Devise.setup do |config|
 
   # If true, requires any email changes to be confirmed (exactly the same way as
   # initial account confirmation) to be applied. Requires additional unconfirmed_email
-  # db field (see migrations). Until confirmed, new email is stored in
+  # db column (see migrations). Until confirmed, new email is stored in
   # unconfirmed_email column, and copied to email column on successful confirmation.
   config.reconfirmable = true
 
@@ -308,6 +314,6 @@ Devise.setup do |config|
   # ==> Configuration for :registerable
 
   # When set to false, does not sign a user in automatically after their password is
-  # changed. Defaults to true, so a user is signed in automatically after changing a password.
+  # changed. Defaults to true, so a user is signed in automatically after changing their password.
   # config.sign_in_after_change_password = true
 end
