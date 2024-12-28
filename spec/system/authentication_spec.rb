@@ -73,6 +73,15 @@ RSpec.describe 'Authentication', type: :system do
       expect(page).to have_text('Invalid Email or password.')
     end
 
+    it 'has no duplicate authentication links' do
+      visit new_user_session_path
+      
+      expect(page).to have_link('create an account', count: 1)
+      expect(page).to have_link('Forgot your password?', count: 1)
+      expect(page).to have_button('Sign in', count: 1)
+      expect(page).to have_link('Sign in with Google', count: 1)
+    end
+
     it 'remembers user session when remember me is checked' do
       visit new_user_session_path
       

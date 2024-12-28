@@ -9,8 +9,13 @@ require 'capybara/rspec'
 require 'database_cleaner'
 # Add additional requires below this line. Rails is not loaded until this point!
 
-# Configure OmniAuth for testing
+# Configure OmniAuth for test mode
 OmniAuth.config.test_mode = true
+
+# Disable request forgery protection in test environment
+OmniAuth.config.mock_auth[:default] = nil
+OmniAuth.config.allowed_request_methods = [:get, :post]
+OmniAuth.config.silence_get_warning = true
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
