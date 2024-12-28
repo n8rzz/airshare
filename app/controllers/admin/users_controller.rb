@@ -48,10 +48,14 @@ module Admin
     
     def toggle_admin
       if @user == current_user
-        redirect_to admin_users_path, alert: 'You cannot modify your own admin status.'
+        redirect_to admin_user_path(@user), alert: 'You cannot modify your own admin status.'
       else
-        @user.update(admin: !@user.admin?)
-        redirect_to admin_users_path, notice: "Admin status #{@user.admin? ? 'granted to' : 'revoked from'} #{@user.email}"
+        if @user.admin?
+          @user.revoke_admin!
+        else
+          @user.make_admin!
+        end
+        redirect_to admin_user_path(@user), notice: "Admin status #{@user.admin? ? 'granted to' : 'revoked from'} #{@user.email}"
       end
     end
     
@@ -62,7 +66,7 @@ module Admin
     end
     
     def user_params
-      params.require(:user).permit(:email)
+      params.require(:user).permit(:email, :admin)
     end
     
     def authorize_admin

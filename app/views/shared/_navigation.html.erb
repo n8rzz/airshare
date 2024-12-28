@@ -24,16 +24,16 @@
               </svg>
             </button>
             
-            <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-100">
+            <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-40">
               <div class="py-1">
                 <%= link_to "Profile", edit_user_registration_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
               </div>
             </div>
           </div>
         <% else %>
-          <%= link_to "Sign In", new_user_session_path, class: "text-gray-700 hover:text-gray-900" %>
-          <%= link_to "Sign Up", new_user_registration_path, class: "ml-4 text-gray-700 hover:text-gray-900" %>
+          <%= link_to "Sign in", new_user_session_path, class: "text-gray-700 hover:text-gray-900" %>
+          <%= link_to "Sign up", new_user_registration_path, class: "ml-4 text-gray-700 hover:text-gray-900" %>
         <% end %>
       </div>
     </div>

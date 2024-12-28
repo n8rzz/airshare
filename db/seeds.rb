@@ -15,23 +15,46 @@ admin = User.create!(
   admin: true
 )
 
-puts "Created admin user: #{admin.email}"
+# Create OAuth admin user
+oauth_admin = User.create!(
+  email: 'oauth.admin@example.com',
+  password: Devise.friendly_token[0, 20],
+  admin: true,
+  provider: 'google_oauth2',
+  uid: '12345',
+  name: 'OAuth Admin',
+  avatar_url: 'https://example.com/oauth_admin.jpg'
+)
 
-# Create regular users
+# Create regular users with different auth methods
 regular_users = [
+  # Password-based users
   { email: 'user1@example.com', password: 'password123' },
-  { email: 'user2@example.com', password: 'password123' }
+  { email: 'user2@example.com', password: 'password123' },
+  
+  # OAuth users
+  {
+    email: 'oauth.user1@example.com',
+    password: Devise.friendly_token[0, 20],
+    provider: 'google_oauth2',
+    uid: '67890',
+    name: 'OAuth User 1',
+    avatar_url: 'https://example.com/oauth_user1.jpg'
+  },
+  {
+    email: 'oauth.user2@example.com',
+    password: Devise.friendly_token[0, 20],
+    provider: 'google_oauth2',
+    uid: '11111',
+    name: 'OAuth User 2',
+    avatar_url: 'https://example.com/oauth_user2.jpg'
+  }
 ].map do |user_attrs|
-  user = User.create!(
-    email: user_attrs[:email],
-    password: user_attrs[:password],
-    admin: false
-  )
-  puts "Created regular user: #{user.email}"
-  user
+  User.create!(user_attrs.merge(admin: false))
 end
 
-puts "\nSeeding completed!"
-puts "Total users created: #{User.count}"
-puts "Admin users: #{User.where(admin: true).count}"
-puts "Regular users: #{User.where(admin: false).count}"
+puts "\nSeeded Users:"
+puts "============="
+User.all.each do |user|
+  puts "#{user.email} (#{user.admin? ? 'Admin' : 'Regular'}#{user.provider ? ', OAuth' : ''})"
+end
