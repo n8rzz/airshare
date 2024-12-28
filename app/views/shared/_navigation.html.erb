@@ -1,4 +1,4 @@
-<nav class="bg-white shadow relative">
+<nav class="bg-white <%= 'shadow' unless current_page?(new_user_session_path) %> relative">
   <div class="container mx-auto px-4">
     <div class="flex justify-between h-16">
       <div class="flex">
@@ -31,7 +31,7 @@
               </div>
             </div>
           </div>
-        <% else %>
+        <% elsif !current_page?(new_user_session_path) && !current_page?(new_user_registration_path) %>
           <%= link_to "Sign in", new_user_session_path, class: "text-gray-700 hover:text-gray-900" %>
           <%= link_to "Sign up", new_user_registration_path, class: "ml-4 text-gray-700 hover:text-gray-900" %>
         <% end %>
