@@ -65,8 +65,9 @@
         </div>
       </div>
 
-      <%= link_to user_google_oauth2_omniauth_authorize_path, 
-          class: "mt-6 w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" do %>
+      <%= button_to user_google_oauth2_omniauth_authorize_path,
+          class: "mt-6 w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50",
+          data: { turbo: false } do %>
         <img src="https://www.google.com/favicon.ico" class="h-5 w-5 mr-2" alt="Google logo">
         Sign in with Google
       <% end %>

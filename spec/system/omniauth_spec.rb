@@ -13,16 +13,20 @@ RSpec.describe 'OmniAuth Authentication', type: :system do
 
       it 'signs in user successfully' do
         visit new_user_session_path
-        click_link 'Sign in with Google'
+        click_button 'Sign in with Google'
 
         expect(page).to have_content('Successfully authenticated from Google account')
         expect(page).to have_content('test@example.com')
       end
 
+      describe 'form configuration' do
+        it_behaves_like 'oauth form validation', 'Google'
+      end
+
       it 'creates a new user if one does not exist' do
         expect {
           visit new_user_session_path
-          click_link 'Sign in with Google'
+          click_button 'Sign in with Google'
           expect(page).to have_content('Successfully authenticated from Google account')
         }.to change(User, :count).by(1)
 
@@ -33,8 +37,8 @@ RSpec.describe 'OmniAuth Authentication', type: :system do
         expect(user.uid).to eq('123456789')
       end
 
-      it 'reuses existing user if one exists' do
-        create(:user, 
+      it 'signs in existing OAuth user' do
+        create(:user,
           email: 'test@example.com',
           provider: 'google_oauth2',
           uid: '123456789'
@@ -42,34 +46,32 @@ RSpec.describe 'OmniAuth Authentication', type: :system do
 
         expect {
           visit new_user_session_path
-          click_link 'Sign in with Google'
+          click_button 'Sign in with Google'
           expect(page).to have_content('Successfully authenticated from Google account')
         }.not_to change(User, :count)
       end
 
       it 'handles existing email with different provider' do
-        # Create user with same email but no OAuth provider
         user = create(:user, email: 'test@example.com', password: 'password123')
 
         visit new_user_session_path
-        click_link 'Sign in with Google'
+        click_button 'Sign in with Google'
         expect(page).to have_content('Successfully authenticated from Google account')
 
-        # Should update existing user with OAuth credentials
         user.reload
         expect(user.provider).to eq('google_oauth2')
         expect(user.uid).to eq('123456789')
       end
 
       it 'preserves admin status when linking accounts' do
-        admin_user = create(:user, 
+        admin_user = create(:user,
           email: 'test@example.com',
           password: 'password123',
           admin: true
         )
 
         visit new_user_session_path
-        click_link 'Sign in with Google'
+        click_button 'Sign in with Google'
         expect(page).to have_content('Successfully authenticated from Google account')
 
         admin_user.reload
@@ -85,7 +87,7 @@ RSpec.describe 'OmniAuth Authentication', type: :system do
 
       it 'shows an error message' do
         visit new_user_session_path
-        click_link 'Sign in with Google'
+        click_button 'Sign in with Google'
 
         expect(page).to have_content('Authentication failed, please try again')
       end
@@ -98,9 +100,22 @@ RSpec.describe 'OmniAuth Authentication', type: :system do
 
       it 'handles authentication failure gracefully' do
         visit new_user_session_path
-        click_link 'Sign in with Google'
+        click_button 'Sign in with Google'
 
         expect(page).to have_content('Authentication failed, please try again')
+      end
+    end
+
+    context 'without email in auth hash' do
+      before do
+        mock_google_auth_hash_without_email
+      end
+
+      it 'handles missing email gracefully' do
+        visit new_user_session_path
+        click_button 'Sign in with Google'
+
+        expect(page).to have_content('Email address is required')
       end
     end
   end
