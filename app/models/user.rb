@@ -32,21 +32,30 @@ class User < ApplicationRecord
   end
 
   def guest?
-    capabilities.empty?
+    Rails.cache.fetch("#{cache_key_with_version}/guest") do
+      capabilities_count.zero?
+    end
   end
 
   def pilot?
-    capabilities.exists?(name: 'pilot')
+    Rails.cache.fetch("#{cache_key_with_version}/pilot") do
+      capabilities.exists?(name: 'pilot')
+    end
   end
 
   def passenger?
-    capabilities.exists?(name: 'passenger')
+    Rails.cache.fetch("#{cache_key_with_version}/passenger") do
+      capabilities.exists?(name: 'passenger')
+    end
   end
 
   def make_guest!
-    capabilities.clear
-    user_capabilities.destroy_all
-    save!
+    transaction do
+      user_capabilities.destroy_all  # Use destroy_all to ensure callbacks are triggered
+      self.capabilities = []  # Ensure the association is cleared
+      touch # Force cache key rotation
+      save!
+    end
   rescue StandardError => e
     errors.add(:base, e.message)
     false
@@ -55,15 +64,18 @@ class User < ApplicationRecord
   def update_capabilities(capabilities = {})
     return true if capabilities.blank?
     
-    user_capabilities.destroy_all
-    
-    capabilities.each do |capability_name, value|
-      next unless value == true || value == "1"
-      capability = Capability.find_by(name: capability_name.to_s)
-      self.capabilities << capability if capability
+    transaction do
+      user_capabilities.destroy_all  # Use destroy_all to ensure callbacks are triggered
+      
+      capabilities.each do |capability_name, value|
+        next unless value == true || value == "1"
+        capability = Capability.find_by(name: capability_name.to_s)
+        self.capabilities << capability if capability
+      end
+      
+      touch # Force cache key rotation
+      save!
     end
-    
-    save!
   rescue StandardError => e
     errors.add(:base, e.message)
     false

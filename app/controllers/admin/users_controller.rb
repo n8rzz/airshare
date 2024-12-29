@@ -5,7 +5,7 @@ module Admin
     before_action :set_user, only: [:show, :edit, :update, :destroy, :toggle_admin]
     
     def index
-      @users = User.all
+      @users = User.includes(:capabilities).all
     end
     
     def show
@@ -49,17 +49,17 @@ module Admin
     end
     
     def search
-      @users = User.where('email ILIKE ?', "%#{params[:query]}%")
+      @users = User.includes(:capabilities).where('email ILIKE ?', "%#{params[:query]}%")
       render :index
     end
     
     def admins
-      @users = User.where(admin: true)
+      @users = User.includes(:capabilities).where(admin: true)
       render :index
     end
     
     def regular_users
-      @users = User.where(admin: false)
+      @users = User.includes(:capabilities).where(admin: false)
       render :index
     end
     

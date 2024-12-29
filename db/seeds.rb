@@ -82,5 +82,5 @@ puts "============="
 User.all.each do |user|
   capabilities = user.capabilities.pluck(:name).join(', ')
   capabilities = 'guest' if capabilities.empty?
-  puts "#{user.email} (#{user.admin? ? 'Admin' : 'Regular'}#{user.provider ? ', OAuth' : ''}, #{capabilities})"
+  puts "#{user.email} (#{user.admin? ? 'Admin' : 'Regular'}#{user.provider ? ', OAuth' : ''}, #{capabilities}, capabilities_count: #{user.capabilities_count})"
 end

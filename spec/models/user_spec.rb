@@ -129,6 +129,36 @@ RSpec.describe User, type: :model do
     let!(:pilot_capability) { create(:capability, name: 'pilot') }
     let!(:passenger_capability) { create(:capability, name: 'passenger') }
 
+    describe 'counter cache' do
+      it 'updates capabilities_count when adding capabilities' do
+        expect {
+          user.capabilities << pilot_capability
+        }.to change { user.reload.capabilities_count }.from(0).to(1)
+
+        expect {
+          user.capabilities << passenger_capability
+        }.to change { user.reload.capabilities_count }.from(1).to(2)
+      end
+
+      it 'updates capabilities_count when removing capabilities' do
+        user.capabilities = [pilot_capability, passenger_capability]
+        expect(user.reload.capabilities_count).to eq(2)
+
+        expect {
+          user.user_capabilities.where(capability: pilot_capability).destroy_all
+        }.to change { user.reload.capabilities_count }.from(2).to(1)
+      end
+
+      it 'updates capabilities_count when clearing capabilities' do
+        user.capabilities = [pilot_capability, passenger_capability]
+        expect(user.reload.capabilities_count).to eq(2)
+
+        expect {
+          user.user_capabilities.destroy_all
+        }.to change { user.reload.capabilities_count }.from(2).to(0)
+      end
+    end
+
     describe '#guest?' do
       it 'returns true when user has no capabilities' do
         expect(user).to be_guest
