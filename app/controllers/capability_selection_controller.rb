@@ -10,24 +10,12 @@ class CapabilitySelectionController < ApplicationController
     if params[:guest]
       current_user.make_guest!
     else
-      # Clear existing capabilities
-      current_user.capabilities.clear
-
-      # Add selected capabilities
-      if params[:pilot] == "1"
-        pilot_capability = Capability.find_by(name: 'pilot')
-        current_user.capabilities << pilot_capability
-      end
-
-      if params[:passenger] == "1"
-        passenger_capability = Capability.find_by(name: 'passenger')
-        current_user.capabilities << passenger_capability
-      end
-
-      # If no capabilities were selected, make user a guest
-      current_user.make_guest! if current_user.capabilities.none?
+      current_user.update_capabilities(
+        pilot: params[:pilot] == "1",
+        passenger: params[:passenger] == "1"
+      )
     end
 
-    redirect_to root_path
+    redirect_to root_path, notice: 'Capabilities updated successfully.'
   end
 end 
