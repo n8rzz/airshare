@@ -25,4 +25,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resource :capability_selection, only: [:new, :create], controller: 'capability_selection'
+  resource :user, only: [:show, :update]
 end

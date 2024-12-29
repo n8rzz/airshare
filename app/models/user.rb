@@ -41,4 +41,14 @@ class User < ApplicationRecord
     capabilities.clear
     user_capabilities.reload
   end
+
+  def update_capabilities(pilot: false, passenger: false)
+    return make_guest! if pilot == false && passenger == false
+
+    transaction do
+      capabilities.clear
+      capabilities << Capability.pilot if pilot
+      capabilities << Capability.passenger if passenger
+    end
+  end
 end

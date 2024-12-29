@@ -24,8 +24,9 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 group :development, :test do
   gem "database_cleaner", "~> 2.0"
   gem "factory_bot_rails", "~> 6.4"
-  gem 'rspec-rails', '~> 6.0.0'
+  gem "rspec-rails", "~> 6.0.0"
   gem "debug", platforms: %i[ mri windows ]
+  gem "rails-controller-testing"
 end
 
 group :development do
