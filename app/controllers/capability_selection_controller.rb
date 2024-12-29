@@ -17,7 +17,11 @@ class CapabilitySelectionController < ApplicationController
     end
 
     if success
-      redirect_to root_path, notice: 'Capabilities updated successfully.'
+      if params[:pilot] == "1" && @user.pilot? && @user.aircraft.none?
+        redirect_to new_aircraft_path, notice: 'Welcome, pilot! Would you like to register your first aircraft? You can always add or modify your aircraft later.'
+      else
+        redirect_to root_path, notice: 'Capabilities updated successfully.'
+      end
     else
       redirect_to new_capability_selection_path, alert: @user.errors.full_messages.to_sentence
     end

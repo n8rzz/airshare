@@ -40,3 +40,7 @@
     </div>
   </div>
 </nav> 
+
+<% if current_user&.pilot? %>
+  <%= link_to 'My Aircraft', aircrafts_path, class: 'nav-link' %>
+<% end %> 

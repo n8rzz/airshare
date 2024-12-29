@@ -1,0 +1,47 @@
+<h1>My Aircraft</h1>
+
+<% if current_user.pilot? %>
+  <div class="mb-4">
+    <%= link_to 'Register New Aircraft', new_aircraft_path, class: 'btn btn-primary' %>
+  </div>
+
+  <% if @aircraft.any? %>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Registration</th>
+            <th>Model</th>
+            <th>Capacity</th>
+            <th>Range (nm)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @aircraft.each do |aircraft| %>
+            <tr>
+              <td><%= aircraft.registration %></td>
+              <td><%= aircraft.model %></td>
+              <td><%= aircraft.capacity %></td>
+              <td><%= aircraft.range_nm %></td>
+              <td>
+                <%= link_to 'View', aircraft_path(aircraft), class: 'btn btn-sm btn-info' %>
+                <%= link_to 'Edit', edit_aircraft_path(aircraft), class: 'btn btn-sm btn-warning' %>
+                <%= button_to 'Remove', aircraft_path(aircraft), method: :delete, class: 'btn btn-sm btn-danger', form: { data: { turbo_confirm: 'Are you sure?' } } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="alert alert-info">
+      You haven't registered any aircraft yet.
+    </div>
+  <% end %>
+<% else %>
+  <div class="alert alert-warning">
+    Only pilots can register and manage aircraft. 
+    <%= link_to 'Update your capabilities', user_path, class: 'alert-link' %> to become a pilot.
+  </div>
+<% end %> 

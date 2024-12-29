@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_29_071155) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_29_071156) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "aircrafts", force: :cascade do |t|
+    t.string "registration", null: false
+    t.string "model", null: false
+    t.integer "capacity", null: false
+    t.date "manufacture_date", null: false
+    t.integer "range_nm", null: false
+    t.bigint "owner_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_aircrafts_on_owner_id"
+    t.index ["registration"], name: "index_aircrafts_on_registration", unique: true
+  end
 
   create_table "capabilities", force: :cascade do |t|
     t.string "name", null: false
@@ -56,6 +69,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_29_071155) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "aircrafts", "users", column: "owner_id"
   add_foreign_key "user_capabilities", "capabilities"
   add_foreign_key "user_capabilities", "users"
 end

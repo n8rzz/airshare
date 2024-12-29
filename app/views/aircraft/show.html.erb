@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-md-8">
+    <h1><%= @aircraft.registration %></h1>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Aircraft Details</h5>
+        
+        <dl class="row">
+          <dt class="col-sm-3">Registration</dt>
+          <dd class="col-sm-9"><%= @aircraft.registration %></dd>
+
+          <dt class="col-sm-3">Model</dt>
+          <dd class="col-sm-9"><%= @aircraft.model %></dd>
+
+          <dt class="col-sm-3">Capacity</dt>
+          <dd class="col-sm-9"><%= @aircraft.capacity %> occupants</dd>
+
+          <dt class="col-sm-3">Manufacture Date</dt>
+          <dd class="col-sm-9"><%= @aircraft.manufacture_date.strftime('%B %d, %Y') %></dd>
+
+          <dt class="col-sm-3">Range</dt>
+          <dd class="col-sm-9">
+            <%= @aircraft.range_nm %> nm
+            (<%= (@aircraft.range_nm * 1.15078).round %> miles / 
+             <%= (@aircraft.range_nm * 1.852).round %> km)
+          </dd>
+
+          <dt class="col-sm-3">Owner</dt>
+          <dd class="col-sm-9"><%= @aircraft.owner.email %></dd>
+        </dl>
+      </div>
+    </div>
+
+    <% if @aircraft.owner == current_user %>
+      <div class="mb-4">
+        <%= link_to 'Edit Aircraft', edit_aircraft_path(@aircraft), class: 'btn btn-warning' %>
+        <%= button_to 'Remove Aircraft', aircraft_path(@aircraft), method: :delete, class: 'btn btn-danger', form: { data: { turbo_confirm: 'Are you sure you want to remove this aircraft?' } } %>
+      </div>
+    <% end %>
+
+    <%= link_to 'Back to Aircraft List', aircraft_index_path, class: 'btn btn-secondary' %>
+  </div>
+</div> 

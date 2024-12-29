@@ -12,6 +12,7 @@ class User < ApplicationRecord
 
   has_many :user_capabilities, dependent: :destroy
   has_many :capabilities, through: :user_capabilities
+  has_many :aircraft, foreign_key: :owner_id, dependent: :destroy, inverse_of: :owner
 
   # Capability names for easy reference and validation
   VALID_CAPABILITIES = %w[pilot passenger].freeze
@@ -69,7 +70,7 @@ class User < ApplicationRecord
       
       capabilities.each do |capability_name, value|
         next unless value == true || value == "1"
-        capability = Capability.find_by(name: capability_name.to_s)
+        capability = Capability.find_or_create_by!(name: capability_name.to_s)
         self.capabilities << capability if capability
       end
       

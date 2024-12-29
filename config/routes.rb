@@ -26,4 +26,6 @@ Rails.application.routes.draw do
 
   resource :capability_selection, only: [:new, :create], controller: 'capability_selection'
   resource :user, only: [:show, :update]
+
+  resources :aircrafts
 end

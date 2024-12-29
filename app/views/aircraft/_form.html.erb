@@ -1,0 +1,46 @@
+<%= form_with(model: aircraft, local: true, class: 'needs-validation') do |f| %>
+  <% if aircraft.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(aircraft.errors.count, "error") %> prevented this aircraft from being saved:</h4>
+      <ul>
+        <% aircraft.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :registration, class: 'form-label' %>
+    <%= f.text_field :registration, class: 'form-control', required: true %>
+    <div class="form-text">Aircraft registration number (e.g., N12345)</div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :model, class: 'form-label' %>
+    <%= f.text_field :model, class: 'form-control', required: true %>
+    <div class="form-text">Aircraft make and model (e.g., Cessna 172S)</div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :capacity, class: 'form-label' %>
+    <%= f.number_field :capacity, class: 'form-control', min: 1, required: true %>
+    <div class="form-text">Maximum number of occupants including pilot</div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :manufacture_date, class: 'form-label' %>
+    <%= f.date_field :manufacture_date, class: 'form-control', required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :range_nm, 'Range (Nautical Miles)', class: 'form-label' %>
+    <%= f.number_field :range_nm, class: 'form-control', min: 1, required: true %>
+    <div class="form-text">Maximum range in nautical miles with full fuel and reserves</div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.submit class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', aircraft_index_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %> 

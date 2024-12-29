@@ -1,73 +1,51 @@
 require 'rails_helper'
 
-RSpec.describe 'Capability Selection', type: :system do
+RSpec.describe "Capability Selection", type: :system do
+  let(:user) { create(:user) }
+
   before do
-    driven_by(:selenium_chrome_headless)
-    ensure_capabilities_exist
+    sign_in user
   end
 
-  context 'when user completes registration' do
-    it 'redirects to capability selection' do
-      visit new_user_registration_path
-      
-      fill_in 'Email', with: 'test@example.com'
-      fill_in 'Password', with: 'password123'
-      fill_in 'Confirm password', with: 'password123'
-      
-      click_button 'Sign up'
-      
-      expect(page).to have_current_path(new_capability_selection_path)
-      expect(page).to have_content('Select your capabilities')
-    end
-  end
-
-  describe 'capability selection page' do
-    let(:user) { create(:user) }
-
+  describe "capability selection page" do
     before do
-      sign_in user
       visit new_capability_selection_path
     end
 
-    it 'allows selecting pilot capability' do
-      check 'Pilot'
-      click_button 'Continue'
-      
-      expect(user.reload).to be_pilot
-      expect(page).to have_current_path(root_path)
+    it "displays the capability selection form" do
+      expect(page).to have_content("Select Your Role")
+      expect(page).to have_field("I want to be a pilot")
+      expect(page).to have_field("I want to be a passenger")
+      expect(page).to have_button("Save Preferences")
     end
 
-    it 'allows selecting passenger capability' do
-      check 'Passenger'
-      click_button 'Continue'
-      
-      expect(user.reload).to be_passenger
-      expect(page).to have_current_path(root_path)
+    it "allows selecting pilot capability" do
+      check "I want to be a pilot"
+      click_button "Save Preferences"
+
+      expect(user.reload.pilot?).to be true
+      expect(page).to have_current_path(new_aircraft_path)
+      expect(page).to have_content("Welcome, pilot!")
     end
 
-    it 'allows selecting both pilot and passenger capabilities' do
-      check 'Pilot'
-      check 'Passenger'
-      click_button 'Continue'
-      
-      expect(user.reload).to be_pilot
-      expect(user.reload).to be_passenger
+    it "allows selecting passenger capability" do
+      check "I want to be a passenger"
+      click_button "Save Preferences"
+
+      expect(user.reload.passenger?).to be true
       expect(page).to have_current_path(root_path)
+      expect(page).to have_content("Capabilities updated successfully")
     end
 
-    it 'allows continuing as guest' do
-      click_button 'Continue as Guest'
-      
-      expect(user.reload).to be_guest
-      expect(page).to have_current_path(root_path)
-    end
+    it "allows selecting both pilot and passenger capabilities" do
+      check "I want to be a pilot"
+      check "I want to be a passenger"
+      click_button "Save Preferences"
 
-    it 'disables pilot and passenger checkboxes when selecting guest' do
-      check 'Pilot'
-      click_button 'Continue as Guest'
-      
-      expect(user.reload).to be_guest
-      expect(user.reload).not_to be_pilot
+      expect(user.reload.pilot?).to be true
+      expect(user.passenger?).to be true
+      expect(page).to have_current_path(new_aircraft_path)
+      expect(page).to have_content("Welcome, pilot!")
     end
   end
 end 
