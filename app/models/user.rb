@@ -32,7 +32,7 @@ class User < ApplicationRecord
   end
 
   def guest?
-    capabilities.none?
+    capabilities.empty?
   end
 
   def pilot?
@@ -45,23 +45,28 @@ class User < ApplicationRecord
 
   def make_guest!
     capabilities.clear
-    user_capabilities.reload
+    user_capabilities.destroy_all
+    save!
+  rescue StandardError => e
+    errors.add(:base, e.message)
+    false
   end
 
-  def update_capabilities(pilot: false, passenger: false)
-    capabilities.clear
+  def update_capabilities(capabilities = {})
+    return true if capabilities.blank?
     
-    if pilot
-      pilot_capability = Capability.find_by(name: 'pilot')
-      capabilities << pilot_capability if pilot_capability
+    user_capabilities.destroy_all
+    
+    capabilities.each do |capability_name, value|
+      next unless value == true || value == "1"
+      capability = Capability.find_by(name: capability_name.to_s)
+      self.capabilities << capability if capability
     end
-
-    if passenger
-      passenger_capability = Capability.find_by(name: 'passenger')
-      capabilities << passenger_capability if passenger_capability
-    end
-
-    save
+    
+    save!
+  rescue StandardError => e
+    errors.add(:base, e.message)
+    false
   end
 
   private
