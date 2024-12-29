@@ -78,10 +78,8 @@ RSpec.describe 'Authentication', type: :system do
       
       expect(page).to have_link('create an account', count: 1)
       expect(page).to have_link('Forgot your password?', count: 1)
-      expect(page).to have_button('Sign in', count: 1)
+      expect(page).to have_selector("input[type='submit'][value='Sign in']", count: 1)
       expect(page).to have_button('Sign in with Google', count: 1)
-      
-      # Verify CSRF token is present
       expect(page).to have_selector("input[name='authenticity_token']", visible: :hidden)
     end
 
