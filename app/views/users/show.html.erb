@@ -1,0 +1,73 @@
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-5 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Profile Information</h3>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">Your personal details and capabilities.</p>
+      </div>
+      <div class="border-t border-gray-200">
+        <dl>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Email address</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= @user.email %></dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Role</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <% if @user.admin? %>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">Admin</span>
+              <% else %>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Regular User</span>
+              <% end %>
+            </dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Current Capabilities</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <div class="space-y-2">
+                <% if @user.guest? %>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">Guest</span>
+                <% else %>
+                  <% if @user.pilot? %>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Pilot</span>
+                  <% end %>
+                  <% if @user.passenger? %>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Passenger</span>
+                  <% end %>
+                <% end %>
+              </div>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="mt-8 bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Update Capabilities</h3>
+        <div class="mt-2 max-w-xl text-sm text-gray-500">
+          <p>Choose how you'd like to use AirShare.</p>
+        </div>
+        <%= form_with url: user_path(@user), method: :patch, class: "mt-5" do |f| %>
+          <div class="space-y-4">
+            <div class="flex items-center">
+              <%= check_box_tag :pilot, "1", @user.pilot?, class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" %>
+              <%= label_tag :pilot, "Pilot", class: "ml-2 block text-sm text-gray-900" %>
+            </div>
+
+            <div class="flex items-center">
+              <%= check_box_tag :passenger, "1", @user.passenger?, class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" %>
+              <%= label_tag :passenger, "Passenger", class: "ml-2 block text-sm text-gray-900" %>
+            </div>
+          </div>
+
+          <div class="mt-5 space-y-4">
+            <%= f.submit "Update Capabilities", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+            
+            <%= button_tag "Continue as Guest", name: "guest", value: "1", class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div> 

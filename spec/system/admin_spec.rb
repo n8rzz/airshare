@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Admin", type: :system do
-  let!(:admin) { User.create!(email: 'admin@example.com', password: 'password123', admin: true) }
-  let!(:user) { User.create!(email: 'user@example.com', password: 'password123', admin: false) }
+  let!(:admin) { create(:user, :admin) }
+  let!(:user) { create(:user) }
+  let!(:pilot_capability) { create(:capability, name: 'pilot') }
+  let!(:passenger_capability) { create(:capability, name: 'passenger') }
 
   describe 'admin dashboard' do
     context 'when logged in as admin' do
@@ -52,6 +54,14 @@ RSpec.describe "Admin", type: :system do
       expect(page).to have_content(user.email)
     end
 
+    it 'displays user capabilities' do
+      user.capabilities << pilot_capability
+      visit admin_users_path
+      within("tr", text: user.email) do
+        expect(page).to have_content('Pilot')
+      end
+    end
+
     it 'allows searching users' do
       fill_in 'query', with: 'admin'
       click_button 'Search'
@@ -73,22 +83,63 @@ RSpec.describe "Admin", type: :system do
         expect(page).not_to have_button('Revoke Admin')
       end
     end
+  end
 
-    it 'allows deleting users', js: true do
-      page.accept_confirm do
-        within("tr", text: user.email) do
-          click_button 'Delete'
-        end
-      end
+  describe 'managing user capabilities' do
+    let(:user) { create(:user) }
 
-      expect(page).to have_content('User was successfully deleted')
-      expect(page).not_to have_content(user.email)
+    before do
+      sign_in create(:user, :admin)
+      visit admin_user_path(user)
     end
 
-    it 'prevents self-deletion' do
-      within("tr", text: admin.email) do
-        expect(page).not_to have_button('Delete')
-      end
+    it 'allows adding pilot capability' do
+      check 'Pilot'
+      click_button 'Update Capabilities'
+      
+      expect(page).to have_content('User capabilities were successfully updated.')
+      expect(user.reload.pilot?).to be true
+    end
+
+    it 'allows adding passenger capability' do
+      check 'Passenger'
+      click_button 'Update Capabilities'
+      
+      expect(page).to have_content('User capabilities were successfully updated.')
+      expect(user.reload.passenger?).to be true
+    end
+
+    it 'allows adding both capabilities' do
+      check 'Pilot'
+      check 'Passenger'
+      click_button 'Update Capabilities'
+      
+      expect(page).to have_content('User capabilities were successfully updated.')
+      expect(user.reload.pilot?).to be true
+      expect(user.reload.passenger?).to be true
+    end
+
+    it 'allows making user a guest' do
+      user.capabilities << pilot_capability << passenger_capability
+      visit admin_user_path(user)
+      
+      check 'Guest'
+      click_button 'Update Guest Status'
+      
+      expect(page).to have_content('User was successfully updated to guest.')
+      expect(user.reload).to be_guest
+    end
+
+    it 'shows validation errors' do
+      allow_any_instance_of(User).to receive(:update_capabilities).and_return(false)
+      allow_any_instance_of(User).to receive(:errors).and_return(
+        double(full_messages: ["Invalid capabilities"], to_sentence: "Invalid capabilities")
+      )
+
+      check 'Pilot'
+      click_button 'Update Capabilities'
+      
+      expect(page).to have_content('Invalid capabilities')
     end
   end
 

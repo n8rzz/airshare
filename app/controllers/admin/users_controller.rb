@@ -5,7 +5,7 @@ module Admin
     before_action :set_user, only: [:show, :edit, :update, :destroy, :toggle_admin]
     
     def index
-      @users = User.all
+      @users = User.includes(:capabilities).all
     end
     
     def show
@@ -14,12 +14,29 @@ module Admin
     def edit
     end
     
+    # FIXME: simplify this
     def update
-      if @user.update(user_params)
-        redirect_to admin_user_path(@user), notice: 'User was successfully updated.'
+      if params[:user][:guest] == "1"
+        if @user.make_guest!
+          redirect_to admin_user_path(@user), notice: 'User was successfully updated to guest.'
+        else
+          redirect_to admin_user_path(@user), alert: @user.errors.full_messages.to_sentence
+        end
+      elsif params[:user][:capabilities]
+        if @user.update_capabilities(params[:user][:capabilities].reject(&:blank?).map { |c| [c, "1"] }.to_h)
+          redirect_to admin_user_path(@user), notice: 'User capabilities were successfully updated.'
+        else
+          redirect_to admin_user_path(@user), alert: @user.errors.full_messages.to_sentence
+        end
       else
-        render :edit
+        if @user.update(user_params)
+          redirect_to admin_user_path(@user), notice: 'User was successfully updated.'
+        else
+          redirect_to admin_user_path(@user), alert: @user.errors.full_messages.to_sentence
+        end
       end
+    rescue StandardError => e
+      redirect_to admin_user_path(@user), alert: e.message
     end
     
     def destroy
@@ -32,17 +49,17 @@ module Admin
     end
     
     def search
-      @users = User.where('email ILIKE ?', "%#{params[:query]}%")
+      @users = User.includes(:capabilities).where('email ILIKE ?', "%#{params[:query]}%")
       render :index
     end
     
     def admins
-      @users = User.where(admin: true)
+      @users = User.includes(:capabilities).where(admin: true)
       render :index
     end
     
     def regular_users
-      @users = User.where(admin: false)
+      @users = User.includes(:capabilities).where(admin: false)
       render :index
     end
     

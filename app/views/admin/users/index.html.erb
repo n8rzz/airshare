@@ -17,6 +17,7 @@
         <tr>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capabilities</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
           <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
         </tr>
@@ -37,6 +38,26 @@
                   Regular User
                 </span>
               <% end %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex gap-2">
+                <% if user.guest? %>
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                    Guest
+                  </span>
+                <% else %>
+                  <% if user.pilot? %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                      Pilot
+                    </span>
+                  <% end %>
+                  <% if user.passenger? %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      Passenger
+                    </span>
+                  <% end %>
+                <% end %>
+              </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
               <%= user.created_at.strftime("%B %d, %Y") %>
