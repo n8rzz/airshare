@@ -6,8 +6,9 @@ class UsersController < ApplicationController
   end
 
   def update
-    if params[:guest]
+    success = if params[:guest]
       @user.make_guest!
+      true
     else
       @user.update_capabilities(
         pilot: params[:pilot] == "1",
@@ -15,7 +16,11 @@ class UsersController < ApplicationController
       )
     end
 
-    redirect_to "/user", notice: 'Capabilities updated successfully.'
+    if success
+      redirect_to "/user", notice: 'Capabilities updated successfully.'
+    else
+      redirect_to "/user", alert: @user.errors.full_messages.to_sentence
+    end
   end
 
   private

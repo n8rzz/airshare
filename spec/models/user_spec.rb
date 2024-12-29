@@ -4,8 +4,34 @@ RSpec.describe User, type: :model do
   describe 'validations' do
     it { should validate_presence_of(:email) }
     it { should validate_uniqueness_of(:email).case_insensitive }
-    it { should allow_value(true).for(:admin) }
-    it { should allow_value(false).for(:admin) }
+    it { should validate_inclusion_of(:admin).in_array([true, false]) }
+
+    describe 'capability validation' do
+      let(:user) { create(:user) }
+      let(:pilot_capability) { create(:capability, name: 'pilot') }
+      let(:passenger_capability) { create(:capability, name: 'passenger') }
+
+      it 'allows valid capabilities' do
+        user.capabilities << pilot_capability
+        user.capabilities << passenger_capability
+        expect(user).to be_valid
+      end
+
+      it 'rejects invalid capabilities' do
+        # Mock an invalid capability name being returned
+        allow(user.capabilities).to receive(:pluck).with(:name).and_return(['invalid_capability'])
+        expect(user).not_to be_valid
+        expect(user.errors[:capabilities]).to include("contains invalid capabilities: invalid_capability")
+      end
+
+      it 'validates against VALID_CAPABILITIES constant' do
+        expect(User::VALID_CAPABILITIES).to contain_exactly('pilot', 'passenger')
+      end
+
+      it 'allows empty capabilities' do
+        expect(user).to be_valid
+      end
+    end
   end
 
   describe 'defaults' do
@@ -50,6 +76,52 @@ RSpec.describe User, type: :model do
   describe 'associations' do
     it { should have_many(:user_capabilities).dependent(:destroy) }
     it { should have_many(:capabilities).through(:user_capabilities) }
+  end
+
+  describe '#update_capabilities' do
+    let(:user) { create(:user) }
+    let!(:pilot_capability) { create(:capability, name: 'pilot') }
+    let!(:passenger_capability) { create(:capability, name: 'passenger') }
+
+    it 'adds pilot capability' do
+      expect(user.update_capabilities(pilot: true)).to be true
+      expect(user.reload.pilot?).to be true
+      expect(user.passenger?).to be false
+    end
+
+    it 'adds passenger capability' do
+      expect(user.update_capabilities(passenger: true)).to be true
+      expect(user.reload.passenger?).to be true
+      expect(user.pilot?).to be false
+    end
+
+    it 'adds both capabilities' do
+      expect(user.update_capabilities(pilot: true, passenger: true)).to be true
+      expect(user.reload.pilot?).to be true
+      expect(user.passenger?).to be true
+    end
+
+    it 'removes all capabilities when neither is selected' do
+      user.capabilities << pilot_capability << passenger_capability
+      expect(user.update_capabilities(pilot: false, passenger: false)).to be true
+      expect(user.reload.capabilities).to be_empty
+    end
+  end
+
+  describe '#make_guest!' do
+    let(:user) { create(:user) }
+    let!(:pilot_capability) { create(:capability, name: 'pilot') }
+    let!(:passenger_capability) { create(:capability, name: 'passenger') }
+
+    before do
+      user.capabilities << pilot_capability << passenger_capability
+    end
+
+    it 'removes all capabilities' do
+      user.make_guest!
+      expect(user.reload.capabilities).to be_empty
+      expect(user).to be_guest
+    end
   end
 
   describe 'capabilities' do

@@ -1,21 +1,31 @@
 class CapabilitySelectionController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_user
 
   def new
-    @pilot_capability = Capability.find_by(name: 'pilot')
-    @passenger_capability = Capability.find_by(name: 'passenger')
   end
 
   def create
-    if params[:guest]
-      current_user.make_guest!
+    success = if params[:guest]
+      @user.make_guest!
+      true
     else
-      current_user.update_capabilities(
+      @user.update_capabilities(
         pilot: params[:pilot] == "1",
         passenger: params[:passenger] == "1"
       )
     end
 
-    redirect_to root_path, notice: 'Capabilities updated successfully.'
+    if success
+      redirect_to root_path, notice: 'Capabilities updated successfully.'
+    else
+      redirect_to new_capability_selection_path, alert: @user.errors.full_messages.to_sentence
+    end
+  end
+
+  private
+
+  def set_user
+    @user = current_user
   end
 end 

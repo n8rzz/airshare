@@ -13,6 +13,12 @@ class User < ApplicationRecord
   has_many :user_capabilities, dependent: :destroy
   has_many :capabilities, through: :user_capabilities
 
+  # Capability names for easy reference and validation
+  VALID_CAPABILITIES = %w[pilot passenger].freeze
+
+  # Validate that capabilities are valid
+  validate :validate_capabilities
+
   def admin?
     admin
   end
@@ -43,12 +49,27 @@ class User < ApplicationRecord
   end
 
   def update_capabilities(pilot: false, passenger: false)
-    return make_guest! if pilot == false && passenger == false
+    capabilities.clear
+    
+    if pilot
+      pilot_capability = Capability.find_by(name: 'pilot')
+      capabilities << pilot_capability if pilot_capability
+    end
 
-    transaction do
-      capabilities.clear
-      capabilities << Capability.pilot if pilot
-      capabilities << Capability.passenger if passenger
+    if passenger
+      passenger_capability = Capability.find_by(name: 'passenger')
+      capabilities << passenger_capability if passenger_capability
+    end
+
+    save
+  end
+
+  private
+
+  def validate_capabilities
+    invalid_capabilities = capabilities.pluck(:name) - VALID_CAPABILITIES
+    if invalid_capabilities.any?
+      errors.add(:capabilities, "contains invalid capabilities: #{invalid_capabilities.join(', ')}")
     end
   end
 end
