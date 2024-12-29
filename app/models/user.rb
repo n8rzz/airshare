@@ -10,6 +10,9 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :admin, inclusion: { in: [true, false] }
 
+  has_many :user_capabilities, dependent: :destroy
+  has_many :capabilities, through: :user_capabilities
+
   def admin?
     admin
   end
@@ -20,5 +23,22 @@ class User < ApplicationRecord
 
   def revoke_admin!
     update!(admin: false)
+  end
+
+  def guest?
+    capabilities.none?
+  end
+
+  def pilot?
+    capabilities.exists?(name: 'pilot')
+  end
+
+  def passenger?
+    capabilities.exists?(name: 'passenger')
+  end
+
+  def make_guest!
+    capabilities.clear
+    user_capabilities.reload
   end
 end

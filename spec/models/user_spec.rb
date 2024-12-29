@@ -46,4 +46,56 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'associations' do
+    it { should have_many(:user_capabilities).dependent(:destroy) }
+    it { should have_many(:capabilities).through(:user_capabilities) }
+  end
+
+  describe 'capabilities' do
+    let(:user) { create(:user) }
+    let!(:pilot_capability) { create(:capability, name: 'pilot') }
+    let!(:passenger_capability) { create(:capability, name: 'passenger') }
+
+    describe '#guest?' do
+      it 'returns true when user has no capabilities' do
+        expect(user).to be_guest
+      end
+
+      it 'returns false when user has capabilities' do
+        user.capabilities << pilot_capability
+        expect(user).not_to be_guest
+      end
+    end
+
+    describe '#pilot?' do
+      it 'returns true when user has pilot capability' do
+        user.capabilities << pilot_capability
+        expect(user).to be_pilot
+      end
+
+      it 'returns false when user does not have pilot capability' do
+        expect(user).not_to be_pilot
+      end
+    end
+
+    describe '#passenger?' do
+      it 'returns true when user has passenger capability' do
+        user.capabilities << passenger_capability
+        expect(user).to be_passenger
+      end
+
+      it 'returns false when user does not have passenger capability' do
+        expect(user).not_to be_passenger
+      end
+    end
+
+    describe '#make_guest!' do
+      it 'removes all capabilities' do
+        user.capabilities = [pilot_capability, passenger_capability]
+        user.make_guest!
+        expect(user.capabilities).to be_empty
+      end
+    end
+  end
 end
