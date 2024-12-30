@@ -1,55 +1,93 @@
-<nav class="bg-white <%= 'shadow' unless current_page?(new_user_session_path) %> relative">
+<nav class="bg-white shadow-sm relative z-50">
   <div class="container mx-auto px-4">
     <div class="flex justify-between h-16">
       <div class="flex">
         <div class="flex-shrink-0 flex items-center">
-          <%= link_to "AirShare", root_path, class: "text-xl font-bold text-blue-600 font-serif" %>
+          <%= link_to "AirShare", root_path, class: "text-2xl font-bold text-primary-600 font-serif hover:text-primary-700 transition-colors" %>
         </div>
-        <div class="ml-6 flex items-center space-x-4">
-          <%= link_to flights_path, class: "text-gray-700 hover:text-gray-900 flex items-center font-sans" do %>
-            <i class="iconoir-airplane h-5 w-5 mr-1"></i>
+        <div class="ml-8 flex items-center space-x-6">
+          <%= link_to flights_path, class: "text-primary-700 hover:text-primary-900 flex items-center font-sans group" do %>
+            <i class="iconoir-airplane h-5 w-5 mr-1.5 transform transition-transform group-hover:-rotate-45"></i>
             <span>Flights</span>
           <% end %>
           <% if user_signed_in? %>
-            <%= link_to bookings_path, class: "text-gray-700 hover:text-gray-900 flex items-center font-sans" do %>
-              <i class="iconoir-bookmark h-5 w-5 mr-1"></i>
+            <%= link_to bookings_path, class: "text-primary-700 hover:text-primary-900 flex items-center font-sans group" do %>
+              <i class="iconoir-bookmark h-5 w-5 mr-1.5 transform transition-transform group-hover:scale-110"></i>
               <span>Bookings</span>
             <% end %>
           <% end %>
         </div>
       </div>
 
-      <div class="flex items-center font-sans">
+      <div class="flex items-center font-sans space-x-6">
         <% if user_signed_in? %>
           <% if current_user.admin? %>
-            <%= link_to "Admin Dashboard", admin_root_path, class: "mr-4 text-gray-700 hover:text-gray-900" %>
+            <%= link_to admin_root_path, class: "text-primary-700 hover:text-primary-900 flex items-center group" do %>
+              <i class="iconoir-settings h-5 w-5 mr-1.5 transform transition-transform group-hover:rotate-45"></i>
+              <span>Admin</span>
+            <% end %>
           <% end %>
           
           <div class="relative dropdown-group">
-            <button class="flex items-center text-gray-700 hover:text-gray-900 focus:outline-none">
+            <button class="flex items-center text-primary-700 hover:text-primary-900 focus:outline-none group">
               <span class="mr-2"><%= current_user.email %></span>
               <% if current_user.admin? %>
-                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">Admin</span>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-accent-100 text-accent-800">Admin</span>
               <% end %>
-              <i class="iconoir-nav-arrow-down h-5 w-5"></i>
+              <i class="iconoir-nav-arrow-down h-5 w-5 transform transition-transform group-hover:rotate-180"></i>
             </button>
             
-            <div class="dropdown-menu absolute right-0 mt-0 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-40">
+            <div class="dropdown-menu absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 opacity-0 invisible transform scale-95 transition-all duration-200">
               <div class="py-1">
                 <% if current_user.pilot? %>
-                  <%= link_to "My Aircraft", aircrafts_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                  <%= link_to aircrafts_path, class: "block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 hover:text-primary-900 transition-colors" do %>
+                    <i class="iconoir-airplane-helix mr-2"></i>My Aircraft
+                  <% end %>
                 <% end %>
-                <%= link_to "Profile", user_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= link_to "Account Settings", edit_user_registration_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <%= link_to user_path, class: "block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 hover:text-primary-900 transition-colors" do %>
+                  <i class="iconoir-user mr-2"></i>Profile
+                <% end %>
+                <%= link_to edit_user_registration_path, class: "block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 hover:text-primary-900 transition-colors" do %>
+                  <i class="iconoir-settings mr-2"></i>Account Settings
+                <% end %>
+                <%= button_to destroy_user_session_path, method: :delete, class: "w-full text-left px-4 py-2 text-sm text-accent-700 hover:bg-accent-50 hover:text-accent-900 transition-colors" do %>
+                  <i class="iconoir-log-out mr-2"></i>Sign out
+                <% end %>
               </div>
             </div>
           </div>
         <% elsif !current_page?(new_user_session_path) && !current_page?(new_user_registration_path) %>
-          <%= link_to "Sign in", new_user_session_path, class: "text-gray-700 hover:text-gray-900" %>
-          <%= link_to "Sign up", new_user_registration_path, class: "ml-4 text-gray-700 hover:text-gray-900" %>
+          <%= link_to "Sign in", new_user_session_path, 
+              class: "transform transition-all duration-200 hover:scale-105 
+                     bg-primary-100 hover:bg-primary-200 text-primary-900 
+                     px-5 py-2 rounded-lg font-semibold" %>
+          <%= link_to "Sign up", new_user_registration_path, 
+              class: "transform transition-all duration-200 hover:scale-105 
+                     bg-accent-500 hover:bg-accent-400 text-white 
+                     px-5 py-2 rounded-lg font-semibold shadow-lg 
+                     hover:shadow-accent-500/50" %>
         <% end %>
       </div>
     </div>
   </div>
-</nav> 
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const dropdownGroups = document.querySelectorAll('.dropdown-group');
+  
+  dropdownGroups.forEach(group => {
+    const menu = group.querySelector('.dropdown-menu');
+    
+    group.addEventListener('mouseenter', () => {
+      menu.classList.remove('opacity-0', 'invisible', 'scale-95');
+      menu.classList.add('opacity-100', 'visible', 'scale-100');
+    });
+    
+    group.addEventListener('mouseleave', () => {
+      menu.classList.add('opacity-0', 'invisible', 'scale-95');
+      menu.classList.remove('opacity-100', 'visible', 'scale-100');
+    });
+  });
+});
+</script> 

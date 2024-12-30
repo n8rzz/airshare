@@ -1,103 +1,127 @@
 <!-- Hero Section -->
-<div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-20">
-  <div class="container mx-auto px-4">
-    <h1 class="text-5xl font-bold mb-6 font-serif">Welcome to AirShare</h1>
-    <p class="text-xl mb-8 font-sans">The two-way marketplace connecting pilots and passengers for cost-shared private flights. Post flights, request routes, and make private aviation more accessible.</p>
-    <div class="flex gap-4">
-      <% unless user_signed_in? %>
-        <%= link_to "I'm a Pilot", new_user_registration_path, class: "bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors" %>
-        <%= link_to "I'm a Passenger", new_user_registration_path, class: "bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors" %>
-      <% end %>
+<div class="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700">
+  <!-- Decorative background pattern -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute transform rotate-45 translate-x-1/2 translate-y-1/2">
+      <div class="w-96 h-96 border-4 border-white rounded-full"></div>
+    </div>
+    <div class="absolute -top-24 -right-24 transform">
+      <div class="w-64 h-64 border-4 border-white rounded-full"></div>
+    </div>
+  </div>
+
+  <div class="relative container mx-auto px-4 py-24">
+    <div class="max-w-4xl">
+      <h1 class="text-6xl font-bold mb-6 font-serif text-white leading-tight">
+        Welcome to <span class="text-accent-400">AirShare</span>
+      </h1>
+      <p class="text-2xl mb-12 font-sans text-primary-50 leading-relaxed">
+        The two-way marketplace connecting pilots and passengers for cost-shared private flights. Post flights, request routes, and make private aviation more accessible.
+      </p>
+      <div class="flex flex-wrap gap-6">
+        <% unless user_signed_in? %>
+          <%= link_to "I'm a Pilot", new_user_registration_path, 
+              class: "transform transition-all duration-200 hover:scale-105 
+                     bg-accent-500 hover:bg-accent-400 text-white px-8 py-4 
+                     rounded-lg font-semibold text-lg shadow-lg 
+                     hover:shadow-accent-500/50" %>
+          <%= link_to "I'm a Passenger", new_user_registration_path, 
+              class: "transform transition-all duration-200 hover:scale-105 
+                     bg-white/10 hover:bg-white/20 text-white border-2 
+                     border-white/50 px-8 py-4 rounded-lg font-semibold 
+                     text-lg backdrop-blur-sm" %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- What is AirShare Section -->
-<div class="py-16 bg-white">
+<div class="py-24 bg-white">
   <div class="container mx-auto px-4">
-    <h2 class="text-3xl font-bold mb-6 text-center font-serif">What is AirShare?</h2>
-    <p class="text-xl text-gray-600 mb-12 max-w-3xl mx-auto text-center font-sans">
+    <h2 class="text-4xl font-bold mb-8 text-center font-serif text-primary-900">What is AirShare?</h2>
+    <p class="text-xl text-primary-700 mb-16 max-w-3xl mx-auto text-center font-sans leading-relaxed">
       AirShare is a flexible flight-sharing platform where both pilots can post available seats and passengers can request specific routes. This two-way matching system maximizes opportunities for cost-shared private flights.
     </p>
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="text-center p-6">
-        <div class="feature-icon-container">
-          <i class="iconoir-airplane feature-icon"></i>
+    <div class="grid md:grid-cols-3 gap-12">
+      <div class="text-center">
+        <div class="mb-6 text-accent-500">
+          <i class="iconoir-airplane text-4xl"></i>
         </div>
-        <h3 class="text-xl font-semibold mb-2 font-serif">For Pilots</h3>
-        <p class="text-gray-600 font-sans">Post your planned flights or browse passenger requests to fill empty seats and share costs.</p>
+        <h3 class="text-2xl font-semibold mb-4 font-serif text-primary-900">For Pilots</h3>
+        <p class="text-primary-600 font-sans leading-relaxed">Post your planned flights or browse passenger requests to fill empty seats and share costs.</p>
       </div>
-      <div class="text-center p-6">
-        <div class="feature-icon-container">
-          <i class="iconoir-group feature-icon"></i>
+      <div class="text-center">
+        <div class="mb-6 text-accent-500">
+          <i class="iconoir-group text-4xl"></i>
         </div>
-        <h3 class="text-xl font-semibold mb-2 font-serif">For Passengers</h3>
-        <p class="text-gray-600 font-sans">Find available flights or post your desired route and let pilots come to you.</p>
+        <h3 class="text-2xl font-semibold mb-4 font-serif text-primary-900">For Passengers</h3>
+        <p class="text-primary-600 font-sans leading-relaxed">Find available flights or post your desired route and let pilots come to you.</p>
       </div>
-      <div class="text-center p-6">
-        <div class="feature-icon-container">
-          <i class="iconoir-calculator feature-icon"></i>
+      <div class="text-center">
+        <div class="mb-6 text-accent-500">
+          <i class="iconoir-calculator text-4xl"></i>
         </div>
-        <h3 class="text-xl font-semibold mb-2 font-serif">Cost Sharing</h3>
-        <p class="text-gray-600 font-sans">Simple and compliant cost-sharing for private pilots, with additional options for commercial pilots.</p>
+        <h3 class="text-2xl font-semibold mb-4 font-serif text-primary-900">Cost Sharing</h3>
+        <p class="text-primary-600 font-sans leading-relaxed">Simple and compliant cost-sharing for private pilots, with additional options for commercial pilots.</p>
       </div>
     </div>
   </div>
 </div>
 
 <!-- How it Works Section -->
-<div class="py-16 bg-gray-50">
+<div class="py-24 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white">
   <div class="container mx-auto px-4">
-    <h2 class="text-3xl font-bold mb-12 text-center font-serif">How it Works</h2>
-    <div class="max-w-4xl mx-auto">
-      <div class="grid md:grid-cols-2 gap-12">
+    <h2 class="text-4xl font-bold mb-16 text-center font-serif">How it Works</h2>
+    <div class="max-w-5xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-16">
         <!-- For Pilots -->
-        <div class="space-y-8">
-          <h3 class="text-2xl font-semibold text-blue-600 mb-6 font-serif">For Pilots</h3>
-          <div class="flex items-start">
-            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mt-1">1</div>
-            <div class="ml-4">
-              <h4 class="text-lg font-semibold mb-2 font-serif">Two Ways to Connect</h4>
-              <p class="text-gray-600 font-sans">Post your upcoming flights or browse passenger requests that match your plans.</p>
+        <div class="space-y-12">
+          <h3 class="text-2xl font-semibold text-accent-400 mb-8 font-serif">For Pilots</h3>
+          <div class="flex items-start group">
+            <div class="bg-accent-500 text-white rounded-xl w-12 h-12 flex items-center justify-center text-xl font-bold mt-1 shadow-lg transform transition-all duration-300 group-hover:scale-110">1</div>
+            <div class="ml-6">
+              <h4 class="text-xl font-semibold mb-3 font-serif text-primary-50">Two Ways to Connect</h4>
+              <p class="text-primary-200 font-sans leading-relaxed">Post your upcoming flights or browse passenger requests that match your plans.</p>
             </div>
           </div>
-          <div class="flex items-start">
-            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mt-1">2</div>
-            <div class="ml-4">
-              <h4 class="text-lg font-semibold mb-2 font-serif">Review & Confirm</h4>
-              <p class="text-gray-600 font-sans">Review passenger details and confirm arrangements for the flight.</p>
+          <div class="flex items-start group">
+            <div class="bg-accent-500 text-white rounded-xl w-12 h-12 flex items-center justify-center text-xl font-bold mt-1 shadow-lg transform transition-all duration-300 group-hover:scale-110">2</div>
+            <div class="ml-6">
+              <h4 class="text-xl font-semibold mb-3 font-serif text-primary-50">Review & Confirm</h4>
+              <p class="text-primary-200 font-sans leading-relaxed">Review passenger details and confirm arrangements for the flight.</p>
             </div>
           </div>
-          <div class="flex items-start">
-            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mt-1">3</div>
-            <div class="ml-4">
-              <h4 class="text-lg font-semibold mb-2 font-serif">Share Costs</h4>
-              <p class="text-gray-600 font-sans">Private pilots split costs fairly, while commercial pilots can set their rates.</p>
+          <div class="flex items-start group">
+            <div class="bg-accent-500 text-white rounded-xl w-12 h-12 flex items-center justify-center text-xl font-bold mt-1 shadow-lg transform transition-all duration-300 group-hover:scale-110">3</div>
+            <div class="ml-6">
+              <h4 class="text-xl font-semibold mb-3 font-serif text-primary-50">Share Costs</h4>
+              <p class="text-primary-200 font-sans leading-relaxed">Private pilots split costs fairly, while commercial pilots can set their rates.</p>
             </div>
           </div>
         </div>
         <!-- For Passengers -->
-        <div class="space-y-8">
-          <h3 class="text-2xl font-semibold text-blue-600 mb-6 font-serif">For Passengers</h3>
-          <div class="flex items-start">
-            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mt-1">1</div>
-            <div class="ml-4">
-              <h4 class="text-lg font-semibold mb-2 font-serif">Find or Request</h4>
-              <p class="text-gray-600 font-sans">Browse available flights or post your desired route, date, and passenger count.</p>
+        <div class="space-y-12">
+          <h3 class="text-2xl font-semibold text-accent-400 mb-8 font-serif">For Passengers</h3>
+          <div class="flex items-start group">
+            <div class="bg-accent-500 text-white rounded-xl w-12 h-12 flex items-center justify-center text-xl font-bold mt-1 shadow-lg transform transition-all duration-300 group-hover:scale-110">1</div>
+            <div class="ml-6">
+              <h4 class="text-xl font-semibold mb-3 font-serif text-primary-50">Find or Request</h4>
+              <p class="text-primary-200 font-sans leading-relaxed">Browse available flights or post your desired route, date, and passenger count.</p>
             </div>
           </div>
-          <div class="flex items-start">
-            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mt-1">2</div>
-            <div class="ml-4">
-              <h4 class="text-lg font-semibold mb-2 font-serif">Connect with Pilots</h4>
-              <p class="text-gray-600 font-sans">Get matched with pilots offering flights or receive responses to your requests.</p>
+          <div class="flex items-start group">
+            <div class="bg-accent-500 text-white rounded-xl w-12 h-12 flex items-center justify-center text-xl font-bold mt-1 shadow-lg transform transition-all duration-300 group-hover:scale-110">2</div>
+            <div class="ml-6">
+              <h4 class="text-xl font-semibold mb-3 font-serif text-primary-50">Connect with Pilots</h4>
+              <p class="text-primary-200 font-sans leading-relaxed">Get matched with pilots offering flights or receive responses to your requests.</p>
             </div>
           </div>
-          <div class="flex items-start">
-            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mt-1">3</div>
-            <div class="ml-4">
-              <h4 class="text-lg font-semibold mb-2 font-serif">Fly Private</h4>
-              <p class="text-gray-600 font-sans">Experience private aviation at a fraction of traditional costs.</p>
+          <div class="flex items-start group">
+            <div class="bg-accent-500 text-white rounded-xl w-12 h-12 flex items-center justify-center text-xl font-bold mt-1 shadow-lg transform transition-all duration-300 group-hover:scale-110">3</div>
+            <div class="ml-6">
+              <h4 class="text-xl font-semibold mb-3 font-serif text-primary-50">Fly Private</h4>
+              <p class="text-primary-200 font-sans leading-relaxed">Experience private aviation at a fraction of traditional costs.</p>
             </div>
           </div>
         </div>
@@ -107,16 +131,25 @@
 </div>
 
 <!-- Join the Community Section -->
-<div class="py-16 bg-white">
-  <div class="container mx-auto px-4 text-center">
-    <h2 class="text-3xl font-bold mb-8 font-serif">Ready to Get Started?</h2>
-    <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto font-sans">
+<div class="py-24 bg-white relative overflow-hidden">
+  <div class="absolute inset-0 bg-primary-50/30"></div>
+  <div class="container mx-auto px-4 text-center relative">
+    <h2 class="text-4xl font-bold mb-8 font-serif text-primary-900">Ready to Get Started?</h2>
+    <p class="text-xl text-primary-700 mb-12 max-w-2xl mx-auto font-sans leading-relaxed">
       Whether you're a pilot looking to share costs or a passenger seeking affordable private flights, join AirShare today.
     </p>
     <% unless user_signed_in? %>
-      <div class="space-x-4">
-        <%= link_to "Create Pilot Account", new_user_registration_path, class: "bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors" %>
-        <%= link_to "Create Passenger Account", new_user_registration_path, class: "border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors" %>
+      <div class="flex flex-wrap justify-center gap-6">
+        <%= link_to "Create Pilot Account", new_user_registration_path, 
+            class: "transform transition-all duration-200 hover:scale-105 
+                   bg-accent-500 hover:bg-accent-400 text-white px-8 py-4 
+                   rounded-lg font-semibold text-lg shadow-lg 
+                   hover:shadow-accent-500/50" %>
+        <%= link_to "Create Passenger Account", new_user_registration_path, 
+            class: "transform transition-all duration-200 hover:scale-105 
+                   bg-primary-100 hover:bg-primary-200 text-primary-900 
+                   border-2 border-primary-200 px-8 py-4 rounded-lg 
+                   font-semibold text-lg" %>
       </div>
     <% end %>
   </div>

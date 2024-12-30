@@ -1,32 +1,65 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
-    <div>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-        Reset your password
-      </h2>
-      <p class="mt-2 text-center text-sm text-gray-600">
-        Enter your email address and we&apos;ll send you password reset instructions
+<div class="min-h-screen flex">
+  <!-- Left side - Illustration (60%) -->
+  <div class="w-3/5 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 flex items-center justify-center relative overflow-hidden">
+    <!-- Decorative background pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute transform rotate-45 translate-x-1/2 translate-y-1/2">
+        <div class="w-96 h-96 border-4 border-white rounded-full"></div>
+      </div>
+      <div class="absolute -top-24 -right-24 transform">
+        <div class="w-64 h-64 border-4 border-white rounded-full"></div>
+      </div>
+    </div>
+    
+    <div class="relative text-center text-white">
+      <div class="mb-8">
+        <i class="iconoir-key text-8xl"></i>
+      </div>
+      <h1 class="text-4xl font-bold font-serif mb-4">Reset Your Password</h1>
+      <p class="text-xl text-primary-100 max-w-md mx-auto">
+        Don't worry, we'll help you get back into your account
       </p>
     </div>
+  </div>
 
-    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "mt-8 space-y-6" }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-
-      <div>
-        <%= f.label :email, class: "sr-only" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email",
-            class: "appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
-            placeholder: "Email address" %>
+  <!-- Right side - Reset password form (40%) -->
+  <div class="w-2/5 flex items-center justify-center bg-white px-8">
+    <div class="max-w-md w-full">
+      <div class="mb-8">
+        <h2 class="text-center text-3xl font-bold text-primary-900 font-serif">
+          Forgot your password?
+        </h2>
+        <p class="mt-2 text-center text-sm text-primary-600">
+          Enter your email address and we'll send you password reset instructions
+        </p>
       </div>
 
-      <div>
-        <%= f.submit "Send reset instructions",
-            class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-      </div>
-    <% end %>
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "space-y-6" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
 
-    <div class="text-center">
-      <%= render "devise/shared/links" %>
+        <div>
+          <%= f.label :email, "Email address", class: "block text-sm font-medium text-primary-700" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email",
+              class: "mt-1 block w-full px-3 py-2 bg-white border border-primary-300 rounded-lg text-primary-900 placeholder-primary-400
+                     focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent
+                     transition duration-150 ease-in-out sm:text-sm",
+              placeholder: "you@example.com" %>
+        </div>
+
+        <div class="flex items-center justify-between space-x-4">
+          <%= f.submit "Reset Password",
+              class: "flex-1 flex justify-center py-2 px-4 border border-transparent rounded-lg
+                     text-sm font-semibold text-white bg-accent-500 hover:bg-accent-400
+                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500
+                     transform transition-all duration-150 hover:scale-[1.02]" %>
+          
+          <%= link_to "Back to sign in", new_session_path(resource_name), 
+              class: "flex-1 flex justify-center py-2 px-4 border border-primary-300 rounded-lg
+                     text-sm font-semibold text-primary-700 bg-white hover:bg-primary-50
+                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500
+                     transform transition-all duration-150 hover:scale-[1.02]" %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
