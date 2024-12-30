@@ -1,0 +1,57 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <h1 class="text-3xl font-bold text-gray-900 mb-8">Sitemap</h1>
+  
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Main Navigation</h2>
+      <ul class="space-y-2">
+        <li><%= link_to "Home", root_path, class: "text-blue-600 hover:text-blue-800" %></li>
+        <li><%= link_to "Flights", flights_path, class: "text-blue-600 hover:text-blue-800" %></li>
+        <li><%= link_to "My Bookings", bookings_path, class: "text-blue-600 hover:text-blue-800" %></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">User Account</h2>
+      <ul class="space-y-2">
+        <% if user_signed_in? %>
+          <li><%= link_to "My Profile", user_path, class: "text-blue-600 hover:text-blue-800" %></li>
+          <li><%= link_to "Sign Out", destroy_user_session_path, data: { turbo_method: :delete }, class: "text-blue-600 hover:text-blue-800" %></li>
+        <% else %>
+          <li><%= link_to "Sign In", new_user_session_path, class: "text-blue-600 hover:text-blue-800" %></li>
+          <li><%= link_to "Sign Up", new_user_registration_path, class: "text-blue-600 hover:text-blue-800" %></li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Information</h2>
+      <ul class="space-y-2">
+        <li><%= link_to "About Us", about_path, class: "text-blue-600 hover:text-blue-800" %></li>
+        <li><%= link_to "Contact", contact_path, class: "text-blue-600 hover:text-blue-800" %></li>
+        <li><%= link_to "Privacy Policy", privacy_policy_path, class: "text-blue-600 hover:text-blue-800" %></li>
+        <li><%= link_to "Terms of Service", terms_of_service_path, class: "text-blue-600 hover:text-blue-800" %></li>
+      </ul>
+    </div>
+
+    <% if current_user&.pilot? %>
+      <div>
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Pilot Features</h2>
+        <ul class="space-y-2">
+          <li><%= link_to "My Aircraft", aircrafts_path, class: "text-blue-600 hover:text-blue-800" %></li>
+          <li><%= link_to "Create Flight", new_flight_path, class: "text-blue-600 hover:text-blue-800" %></li>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if current_user&.admin? %>
+      <div>
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Admin</h2>
+        <ul class="space-y-2">
+          <li><%= link_to "Dashboard", admin_root_path, class: "text-blue-600 hover:text-blue-800" %></li>
+          <li><%= link_to "Manage Users", admin_users_path, class: "text-blue-600 hover:text-blue-800" %></li>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</div> 

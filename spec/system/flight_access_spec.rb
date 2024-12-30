@@ -42,21 +42,28 @@ RSpec.describe 'Flight Access', type: :system do
     end
   end
 
-  describe 'navigation menu' do
+  describe 'header navigation menu' do
     before do
       visit root_path
     end
 
     it 'shows the flights link to all users' do
-      expect(page).to have_link('Flights', href: flights_path)
+      within('nav') do
+        expect(page).to have_link('Flights', href: flights_path)
+      end
     end
 
     it 'does not show the bookings link to visitors' do
-      expect(page).not_to have_link('Bookings')
+      within('nav') do
+        expect(page).not_to have_link('Bookings')
+        expect(page).not_to have_link('My Bookings')
+      end
     end
 
     it 'allows navigation to flights index' do
-      click_link 'Flights'
+      within('nav') do
+        click_link 'Flights'
+      end
       expect(page).to have_current_path(flights_path)
     end
   end
