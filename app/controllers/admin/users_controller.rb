@@ -15,24 +15,18 @@ module Admin
     end
     
     def update
-      if params[:user][:guest] == "1"
-        if @user.make_guest!
-          redirect_to admin_user_path(@user), notice: 'User was successfully updated to guest.'
-        else
-          redirect_to admin_user_path(@user), alert: @user.errors.full_messages.to_sentence
-        end
-      elsif params[:user][:capabilities]
-        if @user.update_capabilities(params[:user][:capabilities].reject(&:blank?).map { |c| [c, "1"] }.to_h)
-          redirect_to admin_user_path(@user), notice: 'User capabilities were successfully updated.'
-        else
-          redirect_to admin_user_path(@user), alert: @user.errors.full_messages.to_sentence
-        end
+      result = if guest_update?
+        handle_guest_update
+      elsif capability_update?
+        handle_capability_update
       else
-        if @user.update(user_params)
-          redirect_to admin_user_path(@user), notice: 'User was successfully updated.'
-        else
-          redirect_to admin_user_path(@user), alert: @user.errors.full_messages.to_sentence
-        end
+        handle_user_update
+      end
+
+      if result
+        redirect_to admin_user_path(@user), notice: success_message
+      else
+        redirect_to admin_user_path(@user), alert: @user.errors.full_messages.to_sentence
       end
     rescue StandardError => e
       redirect_to admin_user_path(@user), alert: e.message
@@ -89,6 +83,37 @@ module Admin
       unless current_user&.admin?
         flash[:alert] = "You are not authorized to access this area."
         redirect_to root_path
+      end
+    end
+
+    def guest_update?
+      params[:user][:guest] == "1"
+    end
+
+    def capability_update?
+      params[:user][:capabilities].present?
+    end
+
+    def handle_guest_update
+      @user.make_guest!
+    end
+
+    def handle_capability_update
+      capabilities = params[:user][:capabilities].reject(&:blank?).map { |c| [c, "1"] }.to_h
+      @user.update_capabilities(capabilities)
+    end
+
+    def handle_user_update
+      @user.update(user_params)
+    end
+
+    def success_message
+      if guest_update?
+        'User was successfully updated to guest.'
+      elsif capability_update?
+        'User capabilities were successfully updated.'
+      else
+        'User was successfully updated.'
       end
     end
   end
