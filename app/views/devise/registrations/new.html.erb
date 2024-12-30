@@ -1,45 +1,74 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
-    <div>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-        Create your account
-      </h2>
-      <p class="mt-2 text-center text-sm text-gray-600">
-        Or
-        <%= link_to "sign in to your account", new_session_path(resource_name), class: "font-medium text-indigo-600 hover:text-indigo-500" %>
-      </p>
+<div class="min-h-screen flex">
+  <!-- Left side - Placeholder (60%) -->
+  <div class="w-3/5 bg-gray-100 flex items-center justify-center">
+    <div class="text-center text-gray-500">
+      <svg class="mx-auto h-48 w-48 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+      </svg>
+      <p class="mt-2">Placeholder for illustration</p>
     </div>
+  </div>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-8 space-y-6" }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-
-      <div class="rounded-md shadow-sm -space-y-px">
-        <div>
-          <%= f.label :email, class: "sr-only" %>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email",
-              class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
-              placeholder: "Email address" %>
-        </div>
-        <div>
-          <%= f.label :password, class: "sr-only" %>
-          <%= f.password_field :password, autocomplete: "new-password",
-              class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
-              placeholder: "Password (#{@minimum_password_length} characters minimum)" %>
-        </div>
-        <div>
-          <%= f.label :password_confirmation, class: "sr-only" %>
-          <%= f.password_field :password_confirmation, autocomplete: "new-password",
-              class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
-              placeholder: "Confirm password" %>
-        </div>
-      </div>
-
+  <!-- Right side - Sign up form (40%) -->
+  <div class="w-2/5 flex items-center justify-center bg-white px-8">
+    <div class="max-w-md w-full space-y-6">
       <div>
-        <%= f.submit "Sign up",
-            class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Create your account
+        </h2>
+        <p class="mt-2 text-center text-sm text-gray-600">
+          Or
+          <%= link_to "sign in to your account", new_session_path(resource_name), class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+        </p>
       </div>
-    <% end %>
 
-    <%= render "devise/shared/links" %>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-8 space-y-6" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div class="rounded-md shadow-sm -space-y-px">
+          <div>
+            <%= f.label :email, class: "sr-only" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email",
+                class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
+                placeholder: "Email address" %>
+          </div>
+          <div>
+            <%= f.label :password, class: "sr-only" %>
+            <%= f.password_field :password, autocomplete: "new-password",
+                class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
+                placeholder: "Password (#{@minimum_password_length} characters minimum)" %>
+          </div>
+          <div>
+            <%= f.label :password_confirmation, class: "sr-only" %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password",
+                class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
+                placeholder: "Confirm password" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.submit "Sign up",
+              class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        </div>
+      <% end %>
+
+      <div class="relative mt-6">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-gray-300"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-2 bg-white text-gray-500">Or</span>
+        </div>
+      </div>
+
+      <%= form_tag user_google_oauth2_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "oauth-form" do %>
+        <%= csrf_meta_tags %>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <button type="submit" class="mt-6 w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+          <img src="https://www.google.com/favicon.ico" class="h-5 w-5 mr-2" alt="Google logo">
+          Sign up with Google
+        </button>
+      <% end %>
+    </div>
   </div>
 </div>
