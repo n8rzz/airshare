@@ -30,12 +30,18 @@ RSpec.describe FlightsController, type: :request do
       end
 
       it 'only shows future flights' do
-        past_flight = create(:flight, departure_time: 1.day.ago)
-        future_flight = create(:flight, departure_time: 1.day.from_now)
-        
-        get flights_path
-        expect(assigns(:flights)).to include(future_flight)
-        expect(assigns(:flights)).not_to include(past_flight)
+        past_flight = nil
+        future_flight = nil
+
+        travel_to Time.current do
+          past_flight = build(:flight, :past)
+          past_flight.save(validate: false)
+          future_flight = create(:flight, :future)
+          
+          get flights_path
+          expect(assigns(:flights)).to include(future_flight)
+          expect(assigns(:flights)).not_to include(past_flight)
+        end
       end
     end
   end
@@ -233,6 +239,72 @@ RSpec.describe FlightsController, type: :request do
       it 'redirects to the flights list' do
         delete flight_path(flight)
         expect(response).to redirect_to(flights_url)
+      end
+    end
+  end
+
+  describe 'GET /flights with search' do
+    let!(:sfo_flight) { create(:flight, origin: 'KSFO', destination: 'KORD', departure_time: 1.day.from_now, estimated_arrival_time: 1.day.from_now + 6.hours) }
+    let!(:jfk_flight) { create(:flight, origin: 'KJFK', destination: 'KBOS', departure_time: 2.days.from_now, estimated_arrival_time: 2.days.from_now + 6.hours) }
+    let!(:lax_flight) { create(:flight, origin: 'KLAX', destination: 'KDEN', departure_time: 3.days.from_now, estimated_arrival_time: 3.days.from_now + 6.hours) }
+
+    context 'when authenticated' do
+      before { sign_in passenger }
+
+      it 'filters flights by airport code' do
+        get flights_path, params: { search: { query: 'SFO' } }
+        expect(assigns(:flights)).to include(sfo_flight)
+        expect(assigns(:flights)).not_to include(jfk_flight, lax_flight)
+      end
+
+      it 'filters flights by date' do
+        get flights_path, params: { search: { date: 2.days.from_now.to_date } }
+        expect(assigns(:flights)).to include(jfk_flight)
+        expect(assigns(:flights)).not_to include(sfo_flight, lax_flight)
+      end
+
+      it 'returns all flights when no search params are provided' do
+        get flights_path
+        expect(assigns(:flights)).to include(sfo_flight, jfk_flight, lax_flight)
+      end
+    end
+  end
+
+  describe 'PATCH /flights/:id/update_status' do
+    let(:flight) { create(:flight, pilot: pilot) }
+
+    it 'requires authentication' do
+      patch update_status_flight_path(flight), params: { status: 'boarding' }
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    context 'when authenticated as a passenger' do
+      before { sign_in passenger }
+
+      it 'denies access to non-pilots' do
+        patch update_status_flight_path(flight), params: { status: 'boarding' }
+        expect(response).to redirect_to(flights_path)
+        expect(flash[:alert]).to eq('You can only manage your own flights.')
+      end
+    end
+
+    context 'when authenticated as the pilot' do
+      before { sign_in pilot }
+
+      it 'updates the flight status' do
+        patch update_status_flight_path(flight), params: { status: 'boarding' }
+        expect(response).to redirect_to(flight_path(flight))
+        expect(flash[:notice]).to eq('Flight status was successfully updated.')
+        expect(flight.reload.status).to eq('boarding')
+      end
+
+      it 'denies access to flights owned by other pilots' do
+        other_pilot = create(:user, :pilot)
+        other_flight = create(:flight, pilot: other_pilot)
+        
+        patch update_status_flight_path(other_flight), params: { status: 'boarding' }
+        expect(response).to redirect_to(flights_path)
+        expect(flash[:alert]).to eq('You can only manage your own flights.')
       end
     end
   end

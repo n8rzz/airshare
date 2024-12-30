@@ -1,4 +1,84 @@
-<div>
-  <h1 class="font-bold text-4xl">Flights#show</h1>
-  <p>Find me in app/views/flights/show.html.erb</p>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-white shadow rounded-lg p-6">
+    <h1 class="text-2xl font-bold mb-6">Flight Details</h1>
+    
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <p class="text-sm font-medium text-gray-500">Origin</p>
+        <p class="mt-1"><%= @flight.origin %></p>
+      </div>
+      
+      <div>
+        <p class="text-sm font-medium text-gray-500">Destination</p>
+        <p class="mt-1"><%= @flight.destination %></p>
+      </div>
+      
+      <div>
+        <p class="text-sm font-medium text-gray-500">Departure Time</p>
+        <p class="mt-1"><%= @flight.departure_time.strftime("%B %d, %Y at %I:%M %p") %></p>
+      </div>
+      
+      <div>
+        <p class="text-sm font-medium text-gray-500">Estimated Arrival</p>
+        <p class="mt-1"><%= @flight.estimated_arrival_time.strftime("%B %d, %Y at %I:%M %p") %></p>
+      </div>
+      
+      <div>
+        <p class="text-sm font-medium text-gray-500">Status</p>
+        <p class="mt-1"><%= @flight.status.titleize %></p>
+      </div>
+      
+      <div>
+        <p class="text-sm font-medium text-gray-500">Available Seats</p>
+        <p class="mt-1"><%= @flight.capacity - @flight.bookings.count %> / <%= @flight.capacity %></p>
+      </div>
+    </div>
+  </div>
+
+  <% if current_user == @flight.pilot %>
+    <div class="mt-6 bg-white shadow rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Update Flight Status</h3>
+      <div class="flex flex-wrap gap-2">
+        <% Flight.statuses.keys.each do |status| %>
+          <% unless @flight.status == status %>
+            <%= button_to status.titleize,
+                        update_status_flight_path(@flight),
+                        method: :patch,
+                        params: { status: status },
+                        class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 
+                               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @booking %>
+    <div class="mt-6 bg-white shadow rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Your Booking</h3>
+      <p>Status: <%= @booking.status.titleize %></p>
+      <div class="mt-4 flex gap-2">
+        <% if @booking.may_check_in? %>
+          <%= button_to 'Check In',
+                      check_in_booking_path(@booking),
+                      method: :patch,
+                      class: "px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700" %>
+        <% end %>
+        
+        <% if @booking.may_cancel? %>
+          <%= button_to 'Cancel Booking',
+                      cancel_booking_path(@booking),
+                      method: :patch,
+                      class: "px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700" %>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="mt-6">
+      <%= button_to 'Book This Flight',
+                  flight_bookings_path(@flight),
+                  method: :post,
+                  class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" %>
+    </div>
+  <% end %>
 </div>

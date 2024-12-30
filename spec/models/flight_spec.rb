@@ -22,14 +22,20 @@ RSpec.describe Flight, type: :model do
 
     context 'departure_time_in_future' do
       it 'is valid when departure time is in the future' do
-        flight.departure_time = 1.day.from_now
-        expect(flight).to be_valid
+        travel_to Time.current do
+          flight.departure_time = 1.day.from_now
+          flight.estimated_arrival_time = 2.days.from_now
+          expect(flight).to be_valid
+        end
       end
 
       it 'is invalid when departure time is in the past' do
-        flight.departure_time = 1.day.ago
-        expect(flight).not_to be_valid
-        expect(flight.errors[:departure_time]).to include('must be in the future')
+        travel_to Time.current do
+          flight.departure_time = 1.day.ago
+          flight.estimated_arrival_time = Time.current
+          expect(flight).not_to be_valid
+          expect(flight.errors[:departure_time]).to include('must be in the future')
+        end
       end
     end
 

@@ -7,7 +7,21 @@ class FlightsController < ApplicationController
   def index
     @flights = Flight.includes(:pilot, :aircraft)
                     .where('departure_time > ?', Time.current)
-                    .order(departure_time: :asc)
+
+    if params[:search].present?
+      if params[:search][:query].present?
+        query = "%#{params[:search][:query].downcase}%"
+        @flights = @flights.where('LOWER(origin) LIKE ? OR LOWER(destination) LIKE ?', 
+                                query, query)
+      end
+      
+      if params[:search][:date].present?
+        date = Date.parse(params[:search][:date])
+        @flights = @flights.where('DATE(departure_time) = ?', date)
+      end
+    end
+
+    @flights = @flights.order(departure_time: :asc)
   end
 
   def show
@@ -48,6 +62,18 @@ class FlightsController < ApplicationController
     redirect_to flights_url, notice: 'Flight was successfully cancelled.'
   end
 
+  def update_status
+    @flight = Flight.find(params[:id])
+    
+    if ensure_pilot_owns_flight
+      if @flight.update(status: params[:status])
+        redirect_to @flight, notice: 'Flight status was successfully updated.'
+      else
+        redirect_to @flight, alert: 'Unable to update flight status.'
+      end
+    end
+  end
+
   private
 
   def set_flight
@@ -70,6 +96,8 @@ class FlightsController < ApplicationController
   def ensure_pilot_owns_flight
     unless @flight.pilot == current_user
       redirect_to flights_path, alert: 'You can only manage your own flights.'
+      return false
     end
+    true
   end
 end

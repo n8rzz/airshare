@@ -86,6 +86,8 @@ RSpec.configure do |config|
   # Include OmniAuth test helpers
   config.include OmniauthHelpers, type: :system
   config.include OmniauthHelpers, type: :request
+
+  config.include ActiveSupport::Testing::TimeHelpers
 end
 
 # Configure Shoulda Matchers

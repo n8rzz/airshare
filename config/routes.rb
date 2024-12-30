@@ -30,6 +30,10 @@ Rails.application.routes.draw do
   resources :aircrafts
   
   resources :flights do
+    member do
+      patch :update_status
+    end
+    
     resources :bookings, shallow: true do
       member do
         patch :confirm
