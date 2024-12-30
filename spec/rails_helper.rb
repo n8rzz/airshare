@@ -81,6 +81,7 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
+    Warden.test_reset!
   end
 
   # Include OmniAuth test helpers
@@ -88,6 +89,8 @@ RSpec.configure do |config|
   config.include OmniauthHelpers, type: :request
 
   config.include ActiveSupport::Testing::TimeHelpers
+
+  config.include Warden::Test::Helpers
 end
 
 # Configure Shoulda Matchers

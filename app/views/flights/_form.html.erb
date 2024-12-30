@@ -1,0 +1,67 @@
+<%= form_with(model: flight, data: { controller: "flight-form", turbo: false }) do |f| %>
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  
+  <% if flight.errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+      <h2 class="font-bold mb-2"><%= pluralize(flight.errors.count, "error") %> prohibited this flight from being saved:</h2>
+      <ul class="list-disc list-inside">
+        <% flight.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= f.label :origin, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= f.text_field :origin, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :destination, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= f.text_field :destination, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :departure_time, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= f.datetime_local_field :departure_time, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :estimated_arrival_time, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= f.datetime_local_field :estimated_arrival_time, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :aircraft_id, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= f.collection_select :aircraft_id, current_user.aircraft, :id, :display_name, 
+        { prompt: "Select an aircraft" }, 
+        { class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+          data: { 
+            flight_form_target: "aircraft",
+            action: "change->flight-form#updateCapacityInfo"
+          }
+        } %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :capacity, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <div class="flex items-center">
+      <%= f.number_field :capacity, 
+          class: "shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", 
+          style: "width: 200px",
+          data: { 
+            flight_form_target: "capacity",
+            aircraft_capacity: current_user.aircraft.pluck(:id, :capacity).to_h.to_json
+          } %>
+      <span class="ml-4 text-gray-600" data-flight-form-target="capacityInfo">
+        Select an aircraft to see its capacity
+      </span>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= f.submit class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+    <%= link_to "Back to flights", flights_path, class: "text-blue-500 hover:text-blue-700" %>
+  </div>
+<% end %> 

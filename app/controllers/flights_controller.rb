@@ -34,7 +34,8 @@ class FlightsController < ApplicationController
 
   def create
     @flight = current_user.flights.build(flight_params)
-    
+    @flight.status = :scheduled
+
     if @flight.save
       redirect_to @flight, notice: 'Flight was successfully created.'
     else

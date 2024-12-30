@@ -8,6 +8,10 @@ class Aircraft < ApplicationRecord
   validates :range_nm, presence: true, numericality: { greater_than: 0 }
   validate :owner_must_be_pilot
 
+  def display_name
+    "#{registration} (#{model})"
+  end
+
   private
 
   def owner_must_be_pilot

@@ -7,8 +7,7 @@ FactoryBot.define do
     range_nm { 640 }  # Typical range for a Cessna 172
 
     after(:build) do |aircraft|
-      pilot = create(:user, :pilot)
-      aircraft.owner = pilot
+      aircraft.owner ||= create(:user, :pilot)
     end
 
     trait :long_range do
