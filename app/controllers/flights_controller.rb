@@ -1,8 +1,8 @@
 class FlightsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_flight, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_flight, only: [:show, :edit, :update, :destroy, :update_status]
   before_action :ensure_pilot, only: [:new, :create, :edit, :update, :destroy]
-  before_action :ensure_pilot_owns_flight, only: [:edit, :update, :destroy]
+  before_action :ensure_pilot_owns_flight, only: [:edit, :update, :destroy, :update_status]
 
   def index
     @flights = Flight.includes(:pilot, :aircraft)
@@ -25,7 +25,7 @@ class FlightsController < ApplicationController
   end
 
   def show
-    @booking = @flight.bookings.find_by(user: current_user)
+    @booking = current_user&.bookings&.find_by(flight: @flight)
   end
 
   def new
@@ -33,15 +33,11 @@ class FlightsController < ApplicationController
   end
 
   def create
-    Rails.logger.debug "Flight params: #{flight_params.inspect}"
     @flight = current_user.flights.build(flight_params)
-    Rails.logger.debug "Flight object: #{@flight.inspect}"
-    Rails.logger.debug "Aircraft: #{@flight.aircraft.inspect}" if @flight.aircraft.present?
-
+    
     if @flight.save
       redirect_to @flight, notice: 'Flight was successfully created.'
     else
-      Rails.logger.debug "Flight errors: #{@flight.errors.full_messages}"
       render :new, status: :unprocessable_entity
     end
   end

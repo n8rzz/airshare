@@ -16,51 +16,45 @@ RSpec.describe FlightsController, type: :request do
   end
 
   describe 'GET /flights' do
-    it 'requires authentication' do
+    let!(:future_flight) { create(:flight, :future) }
+
+    it 'returns a successful response for visitors' do
       get flights_path
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).to be_successful
     end
 
-    context 'when authenticated' do
-      before { sign_in passenger }
+    it 'returns a successful response for authenticated users' do
+      sign_in passenger
+      get flights_path
+      expect(response).to be_successful
+    end
 
-      it 'returns a successful response' do
-        get flights_path
-        expect(response).to be_successful
-      end
-
-      it 'only shows future flights' do
-        past_flight = nil
-        future_flight = nil
-
-        travel_to Time.current do
-          past_flight = build(:flight, :past)
-          past_flight.save(validate: false)
-          future_flight = create(:flight, :future)
-          
-          get flights_path
-          expect(assigns(:flights)).to include(future_flight)
-          expect(assigns(:flights)).not_to include(past_flight)
-        end
-      end
+    it 'only shows future flights' do
+      past_flight = build(:flight, :past)
+      past_flight.save(validate: false)
+      
+      get flights_path
+      expect(assigns(:flights)).to include(future_flight)
+      expect(assigns(:flights)).not_to include(past_flight)
     end
   end
 
   describe 'GET /flights/:id' do
-    let(:flight) { create(:flight) }
+    let(:flight) { create(:flight, :future) }
 
-    it 'requires authentication' do
+    it 'returns a successful response for visitors' do
       get flight_path(flight)
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).to be_successful
+    end
+
+    it 'returns a successful response for authenticated users' do
+      sign_in passenger
+      get flight_path(flight)
+      expect(response).to be_successful
     end
 
     context 'when authenticated' do
       before { sign_in passenger }
-
-      it 'returns a successful response' do
-        get flight_path(flight)
-        expect(response).to be_successful
-      end
 
       it 'assigns the user\'s booking if it exists' do
         booking = create(:booking, flight: flight, user: passenger)
