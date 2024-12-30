@@ -16,4 +16,12 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  .feature-icon-container {
+    @apply text-blue-600 mb-4 h-32 flex items-center justify-center;
+  }
+
+  .feature-icon {
+    transform: scale(3);
+  }
 }
