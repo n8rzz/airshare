@@ -55,6 +55,13 @@ RSpec.describe BookingsController, type: :request do
         get new_flight_booking_path(flight)
         expect(response).to be_successful
       end
+
+      it 'initializes a new booking' do
+        get new_flight_booking_path(flight)
+        expect(assigns(:booking)).to be_a_new(Booking)
+        expect(assigns(:booking).flight).to eq(flight)
+        expect(assigns(:booking).user).to eq(passenger)
+      end
     end
   end
 
@@ -93,6 +100,7 @@ RSpec.describe BookingsController, type: :request do
         it 'redirects to the created booking' do
           post flight_bookings_path(flight), params: { booking: valid_attributes }
           expect(response).to redirect_to(booking_path(Booking.last))
+          expect(flash[:notice]).to eq('Booking was successfully created.')
         end
       end
 
@@ -107,10 +115,44 @@ RSpec.describe BookingsController, type: :request do
           }.not_to change(Booking, :count)
         end
 
-        it 'renders the new template' do
+        it 'renders the new template with errors' do
           post flight_bookings_path(flight), params: { booking: valid_attributes }
           expect(response).to have_http_status(:unprocessable_entity)
+          expect(assigns(:booking).errors[:base]).to include('Flight is at full capacity')
         end
+      end
+    end
+  end
+
+  describe 'GET /bookings/:id' do
+    let(:booking) { create(:booking, user: passenger) }
+
+    it 'requires authentication' do
+      get booking_path(booking)
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    context 'when authenticated as a different user' do
+      before { sign_in other_passenger }
+
+      it 'redirects to bookings path' do
+        get booking_path(booking)
+        expect(response).to redirect_to(bookings_path)
+        expect(flash[:alert]).to eq('You can only manage your own bookings.')
+      end
+    end
+
+    context 'when authenticated as the booking owner' do
+      before { sign_in passenger }
+
+      it 'returns a successful response' do
+        get booking_path(booking)
+        expect(response).to be_successful
+      end
+
+      it 'assigns the requested booking' do
+        get booking_path(booking)
+        expect(assigns(:booking)).to eq(booking)
       end
     end
   end
@@ -139,19 +181,15 @@ RSpec.describe BookingsController, type: :request do
       it 'confirms the booking' do
         patch confirm_booking_path(booking)
         expect(booking.reload.status).to eq('confirmed')
+        expect(flash[:notice]).to eq('Booking was successfully confirmed.')
       end
 
-      it 'redirects to the booking' do
-        patch confirm_booking_path(booking)
-        expect(response).to redirect_to(booking_path(booking))
-      end
-
-      context 'when booking is not pending' do
-        let(:booking) { create(:booking, user: passenger, status: :cancelled) }
+      context 'when booking cannot be confirmed' do
+        let(:booking) { create(:booking, user: passenger, status: :checked_in) }
 
         it 'does not confirm the booking' do
           patch confirm_booking_path(booking)
-          expect(booking.reload.status).to eq('cancelled')
+          expect(booking.reload.status).to eq('checked_in')
           expect(flash[:alert]).to eq('Booking cannot be confirmed.')
         end
       end
@@ -167,9 +205,10 @@ RSpec.describe BookingsController, type: :request do
       it 'checks in the booking' do
         patch check_in_booking_path(booking)
         expect(booking.reload.status).to eq('checked_in')
+        expect(flash[:notice]).to eq('Successfully checked in.')
       end
 
-      context 'when booking is not confirmed' do
+      context 'when booking cannot be checked in' do
         let(:booking) { create(:booking, user: passenger, status: :pending) }
 
         it 'does not check in the booking' do
@@ -190,6 +229,7 @@ RSpec.describe BookingsController, type: :request do
       it 'cancels the booking' do
         patch cancel_booking_path(booking)
         expect(booking.reload.status).to eq('cancelled')
+        expect(flash[:notice]).to eq('Booking was successfully cancelled.')
       end
 
       context 'when booking cannot be cancelled' do

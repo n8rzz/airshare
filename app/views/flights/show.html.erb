@@ -76,10 +76,13 @@
       </div>
     <% else %>
       <div class="mt-6">
-        <%= button_to 'Book This Flight',
-                    flight_bookings_path(@flight),
-                    method: :post,
-                    class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" %>
+        <% if @flight.completed? %>
+          <p class="text-center text-gray-700">This flight is no longer available for booking</p>
+        <% else %>
+          <%= link_to 'Book This Flight',
+                      new_flight_booking_path(@flight),
+                      class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" %>
+        <% end %>
       </div>
     <% end %>
   <% else %>

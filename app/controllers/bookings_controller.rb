@@ -6,7 +6,10 @@ class BookingsController < ApplicationController
   before_action :ensure_owns_booking, only: [:show, :edit, :update, :destroy, :confirm, :check_in, :cancel]
 
   def index
-    @bookings = current_user.bookings.includes(:flight)
+    @bookings = current_user.bookings
+                           .includes(flight: :aircraft)
+                           .joins(:flight)
+                           .order('flights.departure_time ASC')
   end
 
   def show

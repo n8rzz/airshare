@@ -45,24 +45,97 @@ RSpec.describe Booking, type: :model do
     end
   end
 
-  describe 'status' do
+  describe 'status transitions' do
     let(:booking) { create(:booking) }
 
     it 'defaults to pending' do
       expect(booking.status).to eq('pending')
     end
 
-    it 'can transition through different statuses' do
-      expect(booking.pending?).to be true
-      
-      booking.confirmed!
-      expect(booking.confirmed?).to be true
-      
-      booking.checked_in!
-      expect(booking.checked_in?).to be true
-      
-      booking.cancelled!
-      expect(booking.cancelled?).to be true
+    context 'when pending' do
+      let(:booking) { create(:booking, :pending) }
+
+      it 'can be confirmed' do
+        expect(booking.may_confirm?).to be true
+        booking.confirmed!
+        expect(booking.confirmed?).to be true
+      end
+
+      it 'can be cancelled' do
+        expect(booking.may_cancel?).to be true
+        booking.cancelled!
+        expect(booking.cancelled?).to be true
+      end
+
+      it 'cannot be checked in' do
+        expect(booking.may_check_in?).to be false
+      end
+    end
+
+    context 'when confirmed' do
+      let(:booking) { create(:booking, :confirmed) }
+
+      it 'can be checked in' do
+        expect(booking.may_check_in?).to be true
+        booking.checked_in!
+        expect(booking.checked_in?).to be true
+      end
+
+      it 'can be cancelled' do
+        expect(booking.may_cancel?).to be true
+        booking.cancelled!
+        expect(booking.cancelled?).to be true
+      end
+
+      it 'cannot be confirmed again' do
+        expect(booking.may_confirm?).to be false
+      end
+    end
+
+    context 'when checked in' do
+      let(:booking) { create(:booking, :checked_in) }
+
+      it 'cannot be cancelled' do
+        expect(booking.may_cancel?).to be false
+      end
+
+      it 'cannot be confirmed' do
+        expect(booking.may_confirm?).to be false
+      end
+
+      it 'cannot be checked in again' do
+        expect(booking.may_check_in?).to be false
+      end
+    end
+
+    context 'when cancelled' do
+      let(:booking) { create(:booking, :cancelled) }
+
+      it 'cannot transition to any other status' do
+        expect(booking.may_confirm?).to be false
+        expect(booking.may_check_in?).to be false
+        expect(booking.may_cancel?).to be false
+      end
+    end
+  end
+
+  describe 'scopes' do
+    let!(:pending_booking) { create(:booking, :pending) }
+    let!(:confirmed_booking) { create(:booking, :confirmed) }
+    let!(:checked_in_booking) { create(:booking, :checked_in) }
+    let!(:cancelled_booking) { create(:booking, :cancelled) }
+
+    it 'filters active bookings' do
+      active_bookings = Booking.where(status: [:pending, :confirmed, :checked_in])
+      expect(active_bookings).to include(pending_booking, confirmed_booking, checked_in_booking)
+      expect(active_bookings).not_to include(cancelled_booking)
+    end
+
+    it 'filters by status' do
+      expect(Booking.where(status: :pending)).to contain_exactly(pending_booking)
+      expect(Booking.where(status: :confirmed)).to contain_exactly(confirmed_booking)
+      expect(Booking.where(status: :checked_in)).to contain_exactly(checked_in_booking)
+      expect(Booking.where(status: :cancelled)).to contain_exactly(cancelled_booking)
     end
   end
 end
