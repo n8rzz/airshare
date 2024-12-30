@@ -8,17 +8,17 @@ class FlightsController < ApplicationController
     @flights = Flight.includes(:pilot, :aircraft)
                     .where('departure_time > ?', Time.current)
 
-    if params[:search].present?
-      if params[:search][:query].present?
-        query = "%#{params[:search][:query].downcase}%"
-        @flights = @flights.where('LOWER(origin) LIKE ? OR LOWER(destination) LIKE ?', 
-                                query, query)
-      end
-      
-      if params[:search][:date].present?
-        date = Date.parse(params[:search][:date])
-        @flights = @flights.where('DATE(departure_time) = ?', date)
-      end
+    search_params = params[:search] || {}
+    
+    if search_params[:query].present?
+      query = "%#{search_params[:query].downcase}%"
+      @flights = @flights.where('LOWER(origin) LIKE ? OR LOWER(destination) LIKE ?', 
+                              query, query)
+    end
+    
+    if search_params[:date].present?
+      date = Date.parse(search_params[:date])
+      @flights = @flights.where('DATE(departure_time) = ?', date)
     end
 
     @flights = @flights.order(departure_time: :asc)
@@ -62,12 +62,12 @@ class FlightsController < ApplicationController
   def update_status
     @flight = Flight.find(params[:id])
     
-    if ensure_pilot_owns_flight
-      if @flight.update(status: params[:status])
-        redirect_to @flight, notice: 'Flight status was successfully updated.'
-      else
-        redirect_to @flight, alert: 'Unable to update flight status.'
-      end
+    return unless ensure_pilot_owns_flight
+    
+    if @flight.update(status: params[:status])
+      redirect_to @flight, notice: 'Flight status was successfully updated.'
+    else
+      redirect_to @flight, alert: 'Unable to update flight status.'
     end
   end
 

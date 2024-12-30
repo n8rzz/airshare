@@ -14,7 +14,6 @@ module Admin
     def edit
     end
     
-    # FIXME: simplify this
     def update
       if params[:user][:guest] == "1"
         if @user.make_guest!
