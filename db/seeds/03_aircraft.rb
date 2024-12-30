@@ -29,8 +29,8 @@ pilot_users.each_with_index do |pilot, index|
   Aircraft.create!(aircraft_data[index].merge(owner: pilot))
 end
 
-puts "\nSeeded Aircraft:"
-puts "==============="
+Seeds.log "\nSeeded Aircraft:"
+Seeds.log "==============="
 Aircraft.all.each do |aircraft|
-  puts "#{aircraft.registration} (#{aircraft.model}, owned by #{aircraft.owner.email})"
+  Seeds.log "#{aircraft.registration} (#{aircraft.model}, owned by #{aircraft.owner.email})"
 end 

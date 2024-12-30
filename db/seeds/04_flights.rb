@@ -68,10 +68,10 @@ pilot_aircraft = Aircraft.includes(:owner).all.to_a
   )
 end
 
-puts "\nSeeded Flights:"
-puts "=============="
+Seeds.log "\nSeeded Flights:"
+Seeds.log "=============="
 Flight.all.each do |flight|
-  puts "#{flight.origin} to #{flight.destination} (#{flight.status}, pilot: #{flight.pilot.email})"
-  puts "  Departure: #{flight.departure_time}"
-  puts "  Bookings: #{flight.bookings.count}/#{flight.capacity}"
+  Seeds.log "#{flight.origin} to #{flight.destination} (#{flight.status}, pilot: #{flight.pilot.email})"
+  Seeds.log "  Departure: #{flight.departure_time}"
+  Seeds.log "  Bookings: #{flight.bookings.count}/#{flight.capacity}"
 end 

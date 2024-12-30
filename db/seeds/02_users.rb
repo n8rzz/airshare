@@ -62,10 +62,10 @@ regular_users = [
   user
 end
 
-puts "\nSeeded Users:"
-puts "============="
+Seeds.log "\nSeeded Users:"
+Seeds.log "============="
 User.all.each do |user|
   capabilities = user.capabilities.pluck(:name).join(', ')
   capabilities = 'guest' if capabilities.empty?
-  puts "#{user.email} (#{user.admin? ? 'Admin' : 'Regular'}#{user.provider ? ', OAuth' : ''}, #{capabilities}, capabilities_count: #{user.capabilities_count})"
+  Seeds.log "#{user.email} (#{user.admin? ? 'Admin' : 'Regular'}#{user.provider ? ', OAuth' : ''}, #{capabilities}, capabilities_count: #{user.capabilities_count})"
 end 

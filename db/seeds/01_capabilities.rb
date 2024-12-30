@@ -2,8 +2,8 @@
 Seeds.pilot_capability = Capability.find_or_create_by!(name: 'pilot')
 Seeds.passenger_capability = Capability.find_or_create_by!(name: 'passenger')
 
-puts "\nSeeded Capabilities:"
-puts "==================="
+Seeds.log "\nSeeded Capabilities:"
+Seeds.log "==================="
 Capability.all.each do |capability|
-  puts "- #{capability.name}"
+  Seeds.log "- #{capability.name}"
 end 
