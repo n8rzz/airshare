@@ -381,6 +381,7 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    ulid (1.4.0)
     uri (1.0.2)
     version_gem (1.1.4)
     warden (1.2.9)
@@ -436,6 +437,7 @@ DEPENDENCIES
   tailwindcss-rails
   turbo-rails
   tzinfo-data
+  ulid
   web-console
 
 RUBY VERSION
