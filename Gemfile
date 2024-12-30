@@ -50,3 +50,5 @@ group :test do
   gem "selenium-webdriver", "~> 4.17"
   gem "shoulda-matchers", "~> 5.0"
 end
+
+gem 'ulid'

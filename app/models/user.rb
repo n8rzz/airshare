@@ -1,21 +1,19 @@
 class User < ApplicationRecord
-  include OmniauthableUser
-
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, :trackable, omniauth_providers: [:google_oauth2]
+         :omniauthable, omniauth_providers: [:google_oauth2, :office365]
 
-  validates :email, presence: true, uniqueness: true
-  validates :admin, inclusion: { in: [true, false] }
-
+  has_many :owned_aircrafts, class_name: 'Aircraft', foreign_key: :owner_id, dependent: :destroy
+  has_many :piloted_flights, class_name: 'Flight', foreign_key: :pilot_id, dependent: :destroy
+  has_many :bookings, dependent: :destroy
   has_many :user_capabilities, dependent: :destroy
   has_many :capabilities, through: :user_capabilities
-  has_many :aircraft, foreign_key: :owner_id, dependent: :destroy, inverse_of: :owner
-  has_many :flights, foreign_key: :pilot_id, dependent: :destroy, inverse_of: :pilot
-  has_many :bookings, dependent: :destroy
-  has_many :booked_flights, through: :bookings, source: :flight
+
+  # Alias methods for compatibility
+  alias_method :flights, :piloted_flights
+  alias_method :aircraft, :owned_aircrafts
 
   # Capability names for easy reference and validation
   VALID_CAPABILITIES = %w[pilot passenger].freeze
@@ -83,6 +81,33 @@ class User < ApplicationRecord
   rescue StandardError => e
     errors.add(:base, e.message)
     false
+  end
+
+  def self.from_omniauth(auth)
+    if auth.info.email.blank?
+      user = new
+      user.errors.add(:email, :blank, message: 'Email address is required')
+      return user
+    end
+
+    user = find_by(email: auth.info.email)
+    
+    if user
+      user.update!(
+        provider: auth.provider,
+        uid: auth.uid,
+        name: auth.info.name,
+        avatar_url: auth.info.image
+      )
+      user
+    else
+      where(provider: auth.provider, uid: auth.uid).first_or_create! do |user|
+        user.email = auth.info.email
+        user.password = Devise.friendly_token[0, 20]
+        user.name = auth.info.name
+        user.avatar_url = auth.info.image
+      end
+    end
   end
 
   private
