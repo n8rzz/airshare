@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_29_071156) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_30_010856) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,11 +27,39 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_29_071156) do
     t.index ["registration"], name: "index_aircrafts_on_registration", unique: true
   end
 
+  create_table "bookings", force: :cascade do |t|
+    t.integer "status"
+    t.datetime "booking_date"
+    t.bigint "flight_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["flight_id"], name: "index_bookings_on_flight_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
+
   create_table "capabilities", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_capabilities_on_name", unique: true
+  end
+
+  create_table "flights", force: :cascade do |t|
+    t.string "origin"
+    t.string "destination"
+    t.datetime "departure_time"
+    t.datetime "estimated_arrival_time"
+    t.datetime "actual_departure_time"
+    t.datetime "actual_arrival_time"
+    t.integer "status"
+    t.integer "capacity"
+    t.bigint "pilot_id", null: false
+    t.bigint "aircraft_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["aircraft_id"], name: "index_flights_on_aircraft_id"
+    t.index ["pilot_id"], name: "index_flights_on_pilot_id"
   end
 
   create_table "user_capabilities", force: :cascade do |t|
@@ -70,6 +98,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_29_071156) do
   end
 
   add_foreign_key "aircrafts", "users", column: "owner_id"
+  add_foreign_key "bookings", "flights"
+  add_foreign_key "bookings", "users"
+  add_foreign_key "flights", "aircrafts"
+  add_foreign_key "flights", "users", column: "pilot_id"
   add_foreign_key "user_capabilities", "capabilities"
   add_foreign_key "user_capabilities", "users"
 end
