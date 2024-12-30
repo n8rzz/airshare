@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:google_oauth2, :office365]
+         :omniauthable, omniauth_providers: [:google_oauth2]
 
   has_many :owned_aircrafts, class_name: 'Aircraft', foreign_key: :owner_id, dependent: :destroy
   has_many :piloted_flights, class_name: 'Flight', foreign_key: :pilot_id, dependent: :destroy
