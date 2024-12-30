@@ -1,4 +1,46 @@
-<div>
-  <h1 class="font-bold text-4xl">Bookings#new</h1>
-  <p>Find me in app/views/bookings/new.html.erb</p>
+<%# app/views/bookings/new.html.erb %>
+<div class="max-w-2xl mx-auto p-6">
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <h1 class="text-3xl font-bold mb-6">Book Flight <%= @flight.origin %> to <%= @flight.destination %></h1>
+
+    <div class="mb-8 space-y-4">
+      <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+        <div>
+          <h2 class="text-lg font-semibold">Flight Details</h2>
+          <p class="text-gray-600">Departure: <%= @flight.departure_time.strftime('%B %d, %Y at %I:%M %p') %></p>
+          <p class="text-gray-600">Arrival: <%= @flight.estimated_arrival_time.strftime('%B %d, %Y at %I:%M %p') %></p>
+          <p class="text-gray-600">Aircraft: <%= @flight.aircraft.display_name %></p>
+          <p class="text-gray-600">Available Seats: <%= @flight.capacity - @flight.bookings.count %></p>
+        </div>
+      </div>
+    </div>
+
+    <%= form_with(model: [@flight, @booking], local: true, class: "space-y-6") do |f| %>
+      <% if @booking.errors.any? %>
+        <div class="bg-red-50 p-4 rounded-md">
+          <div class="text-red-700">
+            <h2><%= pluralize(@booking.errors.count, "error") %> prohibited this booking from being saved:</h2>
+            <ul class="list-disc list-inside">
+              <% @booking.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="space-y-4">
+        <div>
+          <%= f.label :notes, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_area :notes, rows: 4, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500", placeholder: "Special requests or notes for your booking" %>
+          <p class="mt-2 text-sm text-gray-500">Add any special requests or notes for your booking (optional)</p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-4">
+        <%= link_to 'Back to Flight', flight_path(@flight), class: "text-gray-600 hover:text-gray-900" %>
+        <%= f.submit 'Confirm Booking', class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+      </div>
+    <% end %>
+  </div>
 </div>
