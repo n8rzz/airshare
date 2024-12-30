@@ -122,3 +122,155 @@ puts "==============="
 Aircraft.all.each do |aircraft|
   puts "#{aircraft.registration} (#{aircraft.model}, owned by #{aircraft.owner.email})"
 end
+
+# Create flights
+airports = {
+  west_coast: ['KSFO', 'KLAX', 'KSEA'],
+  east_coast: ['KJFK', 'KBOS', 'KMIA'],
+  central: ['KORD', 'KDEN', 'KDFW']
+}
+
+flight_times = {
+  west_to_east: 6.hours,
+  west_to_central: 4.hours,
+  central_to_east: 3.hours,
+  short_hop: 2.hours
+}
+
+# Get pilots and their aircraft
+pilot_aircraft = Aircraft.includes(:owner).all.to_a
+
+# Create 10 flights with different statuses and times
+10.times do |i|
+  # Rotate through pilots and their aircraft
+  aircraft = pilot_aircraft[i % pilot_aircraft.length]
+  pilot = aircraft.owner
+
+  # Determine origin and destination
+  case i % 3
+  when 0
+    origin = airports[:west_coast].sample
+    destination = airports[:east_coast].sample
+    duration = flight_times[:west_to_east]
+  when 1
+    origin = airports[:central].sample
+    destination = airports[:east_coast].sample
+    duration = flight_times[:central_to_east]
+  else
+    origin = airports[:west_coast].sample
+    destination = airports[:central].sample
+    duration = flight_times[:west_to_central]
+  end
+
+  # Set times based on status
+  departure_time = case i % 5
+    when 0 then 2.days.from_now
+    when 1 then 1.hour.from_now
+    when 2 then 1.day.from_now
+    when 3 then 3.hours.from_now
+    else 12.hours.from_now
+  end
+
+  status = case i % 5
+    when 0 then :scheduled
+    when 1 then :in_air
+    when 2 then :scheduled
+    when 3 then :completed
+    else :boarding
+  end
+
+  flight = Flight.create!(
+    pilot: pilot,
+    aircraft: aircraft,
+    origin: origin,
+    destination: destination,
+    departure_time: departure_time,
+    estimated_arrival_time: departure_time + duration,
+    actual_departure_time: (status == :in_air || status == :completed) ? departure_time - 2.hours : nil,
+    actual_arrival_time: status == :completed ? departure_time - 1.hour : nil,
+    status: status,
+    capacity: [aircraft.capacity - (rand(1..2)), 1].max
+  )
+
+  # Create bookings for scheduled and boarding flights
+  if [:scheduled, :boarding].include?(flight.status)
+    puts "\nDebug: Processing bookings for flight #{flight.id} (#{flight.status})"
+    
+    # Get passengers (users with passenger capability)
+    passenger_capability = Capability.find_by!(name: 'passenger')
+    passengers = User.joins(:capabilities)
+                    .where(capabilities: { id: passenger_capability.id })
+                    .where.not(id: pilot.id)
+                    .distinct
+                    .to_a
+
+    puts "Debug: Found #{passengers.count} eligible passengers for flight #{flight.id}"
+    puts "Debug: Passenger emails: #{passengers.map(&:email).join(', ')}"
+
+    if passengers.any?
+      # Book 30-80% of the capacity, but no more than available passengers
+      num_bookings = [(flight.capacity * rand(0.3..0.8)).ceil, 1].max
+      num_bookings = [num_bookings, passengers.count].min
+      
+      puts "Debug: Will create #{num_bookings} bookings for capacity #{flight.capacity}"
+      
+      # Create bookings
+      passengers.shuffle.take(num_bookings).each do |passenger|
+        Booking.create!(
+          user: passenger,
+          flight: flight,
+          status: :confirmed
+        )
+        puts "Debug: Created booking for #{passenger.email} on flight #{flight.id}"
+      end
+    else
+      puts "Debug: No eligible passengers found for flight #{flight.id}"
+    end
+  end
+end
+
+puts "\nCreating bookings..."
+# Get all scheduled and boarding flights
+eligible_flights = Flight.where(status: [:scheduled, :boarding])
+puts "Found #{eligible_flights.count} eligible flights"
+
+# Get all users with passenger capability
+passenger_capability = Capability.find_by!(name: 'passenger')
+passengers = User.joins(:capabilities)
+                .where(capabilities: { id: passenger_capability.id })
+                .distinct
+                .to_a
+puts "Found #{passengers.count} eligible passengers"
+
+# Create bookings for each eligible flight
+eligible_flights.each do |flight|
+  next if passengers.empty?
+  
+  # Don't book the pilot
+  available_passengers = passengers.reject { |p| p.id == flight.pilot_id }
+  next if available_passengers.empty?
+  
+  # Book 30-80% of the capacity
+  num_bookings = [(flight.capacity * rand(0.3..0.8)).ceil, 1].max
+  num_bookings = [num_bookings, available_passengers.count].min
+  
+  puts "Creating #{num_bookings} bookings for flight #{flight.id} (#{flight.origin} to #{flight.destination})"
+  
+  # Create bookings
+  available_passengers.shuffle.take(num_bookings).each do |passenger|
+    Booking.create!(
+      user: passenger,
+      flight: flight,
+      status: :confirmed
+    )
+    puts "Created booking for #{passenger.email}"
+  end
+end
+
+puts "\nSeeded Flights:"
+puts "=============="
+Flight.all.each do |flight|
+  puts "#{flight.origin} to #{flight.destination} (#{flight.status}, pilot: #{flight.pilot.email})"
+  puts "  Departure: #{flight.departure_time}"
+  puts "  Bookings: #{flight.bookings.count}/#{flight.capacity}"
+end

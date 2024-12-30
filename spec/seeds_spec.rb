@@ -38,4 +38,42 @@ RSpec.describe "Seeds" do
     expect(User.find_by(email: 'oauth.user1@example.com').capabilities_count).to eq(2) # both
     expect(User.find_by(email: 'oauth.user2@example.com').capabilities_count).to eq(0) # guest
   end
+
+  it "creates the correct number of flights with proper attributes" do
+    expect(Flight.count).to eq(10)  # Assuming we'll create 10 flights in seeds
+
+    # Check for different flight statuses
+    expect(Flight.scheduled.count).to be >= 3
+    expect(Flight.in_air.count).to be >= 1
+    expect(Flight.completed.count).to be >= 1
+
+    # Verify flight attributes
+    flights = Flight.all
+    flights.each do |flight|
+      expect(flight.origin).to be_present
+      expect(flight.destination).to be_present
+      expect(flight.pilot).to be_present
+      expect(flight.aircraft).to be_present
+      expect(flight.capacity).to be > 0
+      expect(flight.capacity).to be <= flight.aircraft.capacity
+    end
+  end
+
+  it "creates bookings for flights" do
+    # At least some flights should have bookings
+    flights_with_bookings = Flight.joins(:bookings).distinct
+    expect(flights_with_bookings.count).to be >= 3
+
+    # Verify booking attributes
+    Booking.all.each do |booking|
+      expect(booking.user).to be_present
+      expect(booking.flight).to be_present
+      expect(booking.flight.passengers).to include(booking.user)
+    end
+
+    # No flight should be overbooked
+    Flight.all.each do |flight|
+      expect(flight.bookings.count).to be <= flight.capacity
+    end
+  end
 end 
