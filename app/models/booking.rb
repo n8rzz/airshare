@@ -14,6 +14,18 @@ class Booking < ApplicationRecord
   
   before_validation :set_booking_date, on: :create
 
+  def may_cancel?
+    pending? || confirmed?
+  end
+
+  def may_confirm?
+    pending?
+  end
+
+  def may_check_in?
+    confirmed?
+  end
+
   private
 
   def flight_has_available_capacity

@@ -28,4 +28,16 @@ Rails.application.routes.draw do
   resource :user, only: [:show, :update]
 
   resources :aircrafts
+  
+  resources :flights do
+    resources :bookings, shallow: true do
+      member do
+        patch :confirm
+        patch :check_in
+        patch :cancel
+      end
+    end
+  end
+
+  resources :bookings, only: [:index, :show]
 end

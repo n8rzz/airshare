@@ -13,6 +13,9 @@ class User < ApplicationRecord
   has_many :user_capabilities, dependent: :destroy
   has_many :capabilities, through: :user_capabilities
   has_many :aircraft, foreign_key: :owner_id, dependent: :destroy, inverse_of: :owner
+  has_many :flights, foreign_key: :pilot_id, dependent: :destroy, inverse_of: :pilot
+  has_many :bookings, dependent: :destroy
+  has_many :booked_flights, through: :bookings, source: :flight
 
   # Capability names for easy reference and validation
   VALID_CAPABILITIES = %w[pilot passenger].freeze
