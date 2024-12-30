@@ -1,43 +1,43 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
   <div class="bg-white shadow rounded-lg p-6">
-    <h1 class="text-2xl font-bold mb-6">Flight Details</h1>
+    <h1 class="text-2xl font-bold mb-6 font-serif">Flight Details</h1>
     
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <p class="text-sm font-medium text-gray-500">Origin</p>
-        <p class="mt-1"><%= @flight.origin %></p>
+        <p class="text-sm font-medium text-gray-500 font-serif">Origin</p>
+        <p class="mt-1 font-mono"><%= @flight.origin %></p>
       </div>
       
       <div>
-        <p class="text-sm font-medium text-gray-500">Destination</p>
-        <p class="mt-1"><%= @flight.destination %></p>
+        <p class="text-sm font-medium text-gray-500 font-serif">Destination</p>
+        <p class="mt-1 font-mono"><%= @flight.destination %></p>
       </div>
       
       <div>
-        <p class="text-sm font-medium text-gray-500">Departure Time</p>
-        <p class="mt-1"><%= @flight.departure_time.strftime("%B %d, %Y at %I:%M %p") %></p>
+        <p class="text-sm font-medium text-gray-500 font-serif">Departure Time</p>
+        <p class="mt-1 font-mono"><%= @flight.departure_time.strftime("%B %d, %Y at %I:%M %p") %></p>
       </div>
       
       <div>
-        <p class="text-sm font-medium text-gray-500">Estimated Arrival</p>
-        <p class="mt-1"><%= @flight.estimated_arrival_time.strftime("%B %d, %Y at %I:%M %p") %></p>
+        <p class="text-sm font-medium text-gray-500 font-serif">Estimated Arrival</p>
+        <p class="mt-1 font-mono"><%= @flight.estimated_arrival_time.strftime("%B %d, %Y at %I:%M %p") %></p>
       </div>
       
       <div>
-        <p class="text-sm font-medium text-gray-500">Status</p>
-        <p class="mt-1"><%= @flight.status.titleize %></p>
+        <p class="text-sm font-medium text-gray-500 font-serif">Status</p>
+        <p class="mt-1 font-mono"><%= @flight.status.titleize %></p>
       </div>
       
       <div>
-        <p class="text-sm font-medium text-gray-500">Available Seats</p>
-        <p class="mt-1"><%= @flight.capacity - @flight.bookings.count %> / <%= @flight.capacity %></p>
+        <p class="text-sm font-medium text-gray-500 font-serif">Available Seats</p>
+        <p class="mt-1 font-mono"><%= @flight.capacity - @flight.bookings.count %> / <%= @flight.capacity %></p>
       </div>
     </div>
   </div>
 
   <% if current_user&.pilot? && current_user == @flight.pilot %>
     <div class="mt-6 bg-white shadow rounded-lg p-6">
-      <h3 class="text-lg font-medium text-gray-900 mb-4">Update Flight Status</h3>
+      <h3 class="text-lg font-medium text-gray-900 mb-4 font-serif">Update Flight Status</h3>
       <div class="flex flex-wrap gap-2">
         <% Flight.statuses.keys.each do |status| %>
           <% unless @flight.status == status %>
@@ -56,8 +56,8 @@
   <% if current_user %>
     <% if @booking %>
       <div class="mt-6 bg-white shadow rounded-lg p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">Your Booking</h3>
-        <p>Status: <%= @booking.status.titleize %></p>
+        <h3 class="text-lg font-medium text-gray-900 mb-4 font-serif">Your Booking</h3>
+        <p class="font-mono">Status: <%= @booking.status.titleize %></p>
         <div class="mt-4 flex gap-2">
           <% if @booking.may_check_in? %>
             <%= button_to 'Check In',

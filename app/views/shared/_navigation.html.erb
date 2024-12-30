@@ -3,15 +3,15 @@
     <div class="flex justify-between h-16">
       <div class="flex">
         <div class="flex-shrink-0 flex items-center">
-          <%= link_to "AirShare", root_path, class: "text-xl font-bold text-blue-600" %>
+          <%= link_to "AirShare", root_path, class: "text-xl font-bold text-blue-600 font-serif" %>
         </div>
         <div class="ml-6 flex items-center space-x-4">
-          <%= link_to flights_path, class: "text-gray-700 hover:text-gray-900 flex items-center" do %>
+          <%= link_to flights_path, class: "text-gray-700 hover:text-gray-900 flex items-center font-sans" do %>
             <i class="iconoir-airplane h-5 w-5 mr-1"></i>
             <span>Flights</span>
           <% end %>
           <% if user_signed_in? %>
-            <%= link_to bookings_path, class: "text-gray-700 hover:text-gray-900 flex items-center" do %>
+            <%= link_to bookings_path, class: "text-gray-700 hover:text-gray-900 flex items-center font-sans" do %>
               <i class="iconoir-bookmark h-5 w-5 mr-1"></i>
               <span>Bookings</span>
             <% end %>
@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class="flex items-center">
+      <div class="flex items-center font-sans">
         <% if user_signed_in? %>
           <% if current_user.admin? %>
             <%= link_to "Admin Dashboard", admin_root_path, class: "mr-4 text-gray-700 hover:text-gray-900" %>
