@@ -35,17 +35,70 @@ RSpec.describe "flights/index", type: :view do
     end
   end
 
-  it "displays flight information" do
+  it "displays flight information in a table" do
     render
 
-    flights.each do |flight|
-      # Check for origin and destination
-      assert_select "div.text-lg", text: flight.origin
-      assert_select "div.text-lg", text: flight.destination
+    assert_select "table" do
+      assert_select "thead" do
+        assert_select "th", text: "Flight"
+        assert_select "th", text: "Departure"
+        assert_select "th", text: "Status"
+        assert_select "th", text: "Aircraft"
+        assert_select "th", text: "Pilot"
+        assert_select "th", text: "Capacity"
+        assert_select "th", text: "Actions"
+      end
 
-      # Check for dates
-      assert_select "div.text-sm", text: flight.departure_time.strftime("%a, %b %d")
-      assert_select "div.text-sm", text: flight.estimated_arrival_time.strftime("%a, %b %d")
+      assert_select "tbody" do
+        flights.each do |flight|
+          assert_select "tr" do
+            # Flight route
+            assert_select "td", text: /#{flight.origin} → #{flight.destination}/
+
+            # Departure date and time
+            assert_select "td", text: /#{flight.departure_time.strftime("%B %d, %Y")}/
+            assert_select "td", text: /#{flight.departure_time.strftime("%I:%M %p")}/
+
+            # Status badge
+            assert_select "td span.rounded-full", text: flight.status.titleize
+
+            # Aircraft info
+            assert_select "td", text: /#{flight.aircraft.registration}/
+            assert_select "td", text: /#{flight.aircraft.model}/
+
+            # Pilot name
+            assert_select "td", text: flight.pilot.name
+
+            # Capacity
+            assert_select "td", text: flight.capacity.to_s
+
+            # Actions
+            assert_select "td" do
+              assert_select "a", text: "View"
+              # As a passenger, shouldn't see edit/cancel
+              assert_select "a", text: "Edit", count: 0
+              assert_select "a", text: "Cancel", count: 0
+            end
+          end
+        end
+      end
+    end
+  end
+
+  context "when viewed by the pilot" do
+    before do
+      without_partial_double_verification do
+        allow(view).to receive(:current_user).and_return(flights.first.pilot)
+      end
+    end
+
+    it "shows edit and cancel links for own flights" do
+      render
+
+      assert_select "tr" do
+        assert_select "a", text: "Edit"
+        assert_select "a", text: "Cancel"
+      end
     end
   end
 end 
