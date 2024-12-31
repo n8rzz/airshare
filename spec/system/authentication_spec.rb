@@ -169,6 +169,73 @@ RSpec.describe 'Authentication', type: :system do
       expect(page).to have_text('You need to sign in or sign up before continuing.')
       expect(page).to have_current_path(new_user_session_path)
     end
+
+    context 'with redirect after login' do
+      let!(:flight) { create(:flight, :future) }
+
+      it 'redirects back to the previous page after signing in' do
+        # First visit a flight page
+        visit flight_path(flight)
+        expect(page).to have_current_path(flight_path(flight))
+
+        # Click sign in and complete the sign in process
+        click_link 'Sign in', class: 'transform'
+        fill_in 'Email', with: user.email
+        fill_in 'Password', with: 'password123'
+        click_button 'Sign in'
+
+        # Should be redirected back to the flight page
+        expect(page).to have_current_path(flight_path(flight))
+        expect(page).to have_text('Signed in successfully.')
+      end
+
+      it 'does not redirect back to sign in page after signing in' do
+        # Directly visit sign in page
+        visit new_user_session_path
+        fill_in 'Email', with: user.email
+        fill_in 'Password', with: 'password123'
+        click_button 'Sign in'
+
+        # Should not redirect back to sign in page
+        expect(page).not_to have_current_path(new_user_session_path)
+      end
+
+      it 'does not redirect back to sign up page after signing in' do
+        # Visit sign up page first
+        visit new_user_registration_path
+        # Then go to sign in page and sign in
+        click_link 'sign in to your account'
+        fill_in 'Email', with: user.email
+        fill_in 'Password', with: 'password123'
+        click_button 'Sign in'
+
+        # Should not redirect back to sign up page
+        expect(page).not_to have_current_path(new_user_registration_path)
+      end
+
+      it 'maintains redirect after failed login attempt' do
+        # First visit a flight page
+        visit flight_path(flight)
+        click_link 'Sign in', class: 'transform'
+
+        # Attempt login with wrong password
+        fill_in 'Email', with: user.email
+        fill_in 'Password', with: 'wrong_password'
+        click_button 'Sign in'
+
+        # Should show error but maintain the redirect
+        expect(page).to have_text('Invalid Email or password')
+
+        # Try again with correct password
+        fill_in 'Email', with: user.email
+        fill_in 'Password', with: 'password123'
+        click_button 'Sign in'
+
+        # Should redirect to the original flight page
+        expect(page).to have_current_path(flight_path(flight))
+        expect(page).to have_text('Signed in successfully.')
+      end
+    end
   end
 
   describe 'Password Reset' do
