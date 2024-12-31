@@ -1,7 +1,74 @@
 <div class="bg-white shadow rounded-lg overflow-hidden">
   <% if @flights.any? %>
-    <div class="divide-y divide-gray-200">
-      <%= render partial: 'flight_card', collection: @flights, as: :flight %>
+    <div class="min-w-full">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead>
+          <tr class="bg-gray-50">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Flight</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departure</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aircraft</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pilot</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @flights.each do |flight| %>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <%= flight.origin %> → <%= flight.destination %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <%= flight.departure_time.strftime("%B %d, %Y") %>
+                <div class="text-xs text-gray-400">
+                  <%= flight.departure_time.strftime("%I:%M %p") %>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <% status_classes = case flight.status
+                   when 'scheduled'
+                     'bg-yellow-100 text-yellow-800'
+                   when 'cancelled'
+                     'bg-red-100 text-red-800'
+                   when 'in_air'
+                     'bg-green-100 text-green-800'
+                   when 'completed'
+                     'bg-blue-100 text-blue-800'
+                   else
+                     'bg-gray-100 text-gray-800'
+                   end %>
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= status_classes %>">
+                  <%= flight.status.titleize %>
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <%= flight.aircraft.registration %>
+                <div class="text-xs text-gray-400">
+                  <%= flight.aircraft.model %>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <%= flight.pilot.name %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <%= flight.capacity %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <%= link_to 'View', flight_path(flight), class: "text-primary-600 hover:text-primary-900" %>
+                <% if current_user&.admin? || current_user == flight.pilot %>
+                  <%= link_to 'Edit', edit_flight_path(flight), class: "ml-3 text-primary-600 hover:text-primary-900" %>
+                <% end %>
+                <% if current_user&.admin? || current_user == flight.pilot %>
+                  <%= link_to 'Cancel', flight_path(flight), 
+                      data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
+                      class: "ml-3 text-red-600 hover:text-red-900" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   <% else %>
     <div class="p-6 text-center text-gray-500">

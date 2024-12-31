@@ -23,7 +23,7 @@ RSpec.describe 'Flight Access', type: :system do
     end
 
     it 'allows viewing individual flight details' do
-      click_link "View Details"
+      click_link "View"
       expect(page).to have_current_path(flight_path(future_flight))
       expect(page).to have_content(future_flight.origin)
       expect(page).to have_content(future_flight.destination)
@@ -40,7 +40,7 @@ RSpec.describe 'Flight Access', type: :system do
     end
 
     it 'shows a sign in prompt when trying to book' do
-      click_link "View Details"
+      click_link "View"
       expect(page).to have_content('Sign in to book this flight')
       expect(page).to have_link('Sign in', href: new_user_session_path)
     end
