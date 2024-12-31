@@ -5,33 +5,33 @@
         <div class="flex-shrink-0 flex items-center">
           <%= link_to "AirShare", root_path, class: "text-2xl font-bold text-primary-600 font-serif hover:text-primary-700 transition-colors" %>
         </div>
-        <div class="ml-8 flex items-center space-x-6">
-          <%= link_to flights_path, class: "text-primary-700 hover:text-primary-900 flex items-center font-sans group" do %>
-            <i class="iconoir-airplane h-5 w-5 mr-1.5 transform transition-transform group-hover:-rotate-45"></i>
+        <div class="flex items-center gap-6 ml-8">
+          <%= link_to flights_path, class: "text-primary-700 hover:text-primary-900 flex items-center font-sans group gap-1" do %>
+            <i class="iconoir-airplane h-5 w-5 transform transition-transform group-hover:-rotate-45"></i>
             <span>Flights</span>
           <% end %>
           <% if user_signed_in? %>
-            <%= link_to bookings_path, class: "text-primary-700 hover:text-primary-900 flex items-center font-sans group" do %>
-              <i class="iconoir-bookmark h-5 w-5 mr-1.5 transform transition-transform group-hover:scale-110"></i>
+            <%= link_to bookings_path, class: "text-primary-700 hover:text-primary-900 flex items-center font-sans group gap-1" do %>
+              <i class="iconoir-bookmark h-5 w-5 transform transition-transform group-hover:scale-110"></i>
               <span>Bookings</span>
             <% end %>
           <% end %>
         </div>
       </div>
 
-      <div class="flex items-center font-sans space-x-6">
+      <div class="flex items-center font-sans gap-6">
         <% if user_signed_in? %>
           <% if current_user.admin? %>
-            <%= link_to admin_root_path, class: "text-primary-700 hover:text-primary-900 flex items-center group" do %>
-              <i class="iconoir-settings h-5 w-5 mr-1.5 transform transition-transform group-hover:rotate-45"></i>
-              <span>Admin</span>
+            <%= link_to admin_root_path, class: "text-primary-700 hover:text-primary-900 inline-flex group gap-1 items-center" do %>
+              <i class="iconoir-settings flex-shrink-0 h-[1.25em] w-[1.25em] transform transition-transform group-hover:rotate-45 relative"></i>
+              <span class="flex-shrink-0">Admin</span>
             <% end %>
           <% end %>
           
           <div class="relative">
             <input type="checkbox" id="dropdown-toggle" class="hidden peer">
-            <label for="dropdown-toggle" class="flex items-center text-primary-700 hover:text-primary-900 focus:outline-none cursor-pointer">
-              <span class="mr-2"><%= current_user.email %></span>
+            <label for="dropdown-toggle" class="flex items-center gap-2 text-primary-700 hover:text-primary-900 focus:outline-none cursor-pointer">
+              <span><%= current_user.email %></span>
               <% if current_user.admin? %>
                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-accent-100 text-accent-800">Admin</span>
               <% end %>
@@ -41,18 +41,18 @@
             <div class="absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 hidden peer-checked:block">
               <div class="py-1">
                 <% if current_user.pilot? %>
-                  <%= link_to aircrafts_path, class: "block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 hover:text-primary-900 transition-colors" do %>
-                    <i class="iconoir-airplane-helix mr-2"></i>My Aircraft
+                  <%= link_to aircrafts_path, class: "block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 hover:text-primary-900 transition-colors flex items-center gap-2" do %>
+                    <i class="iconoir-airplane-helix"></i>My Aircraft
                   <% end %>
                 <% end %>
-                <%= link_to user_path, class: "block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 hover:text-primary-900 transition-colors" do %>
-                  <i class="iconoir-user mr-2"></i>Profile
+                <%= link_to user_path, class: "block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 hover:text-primary-900 transition-colors flex items-center gap-2" do %>
+                  <i class="iconoir-user"></i>Profile
                 <% end %>
-                <%= link_to edit_user_registration_path, class: "block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 hover:text-primary-900 transition-colors" do %>
-                  <i class="iconoir-settings mr-2"></i>Account Settings
+                <%= link_to edit_user_registration_path, class: "block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 hover:text-primary-900 transition-colors flex items-center gap-2" do %>
+                  <i class="iconoir-settings"></i>Account Settings
                 <% end %>
-                <%= button_to destroy_user_session_path, method: :delete, class: "w-full text-left px-4 py-2 text-sm text-accent-700 hover:bg-accent-50 hover:text-accent-900 transition-colors" do %>
-                  <i class="iconoir-log-out mr-2"></i>Sign out
+                <%= button_to destroy_user_session_path, method: :delete, class: "w-full text-left px-4 py-2 text-sm text-accent-700 hover:bg-accent-50 hover:text-accent-900 transition-colors flex items-center gap-2" do %>
+                  <i class="iconoir-log-out"></i>Sign out
                 <% end %>
               </div>
             </div>
