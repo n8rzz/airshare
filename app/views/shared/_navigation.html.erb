@@ -28,16 +28,17 @@
             <% end %>
           <% end %>
           
-          <div class="relative dropdown-group">
-            <button class="flex items-center text-primary-700 hover:text-primary-900 focus:outline-none group">
+          <div class="relative">
+            <input type="checkbox" id="dropdown-toggle" class="hidden peer">
+            <label for="dropdown-toggle" class="flex items-center text-primary-700 hover:text-primary-900 focus:outline-none cursor-pointer">
               <span class="mr-2"><%= current_user.email %></span>
               <% if current_user.admin? %>
                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-accent-100 text-accent-800">Admin</span>
               <% end %>
-              <i class="iconoir-nav-arrow-down h-5 w-5 transform transition-transform group-hover:rotate-180"></i>
-            </button>
+              <i class="iconoir-nav-arrow-down h-5 w-5 transform transition-transform duration-200 peer-checked:rotate-180"></i>
+            </label>
             
-            <div class="dropdown-menu absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 opacity-0 invisible transform scale-95 transition-all duration-200">
+            <div class="absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 hidden peer-checked:block">
               <div class="py-1">
                 <% if current_user.pilot? %>
                   <%= link_to aircrafts_path, class: "block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 hover:text-primary-900 transition-colors" do %>
@@ -70,24 +71,4 @@
       </div>
     </div>
   </div>
-</nav>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const dropdownGroups = document.querySelectorAll('.dropdown-group');
-  
-  dropdownGroups.forEach(group => {
-    const menu = group.querySelector('.dropdown-menu');
-    
-    group.addEventListener('mouseenter', () => {
-      menu.classList.remove('opacity-0', 'invisible', 'scale-95');
-      menu.classList.add('opacity-100', 'visible', 'scale-100');
-    });
-    
-    group.addEventListener('mouseleave', () => {
-      menu.classList.add('opacity-0', 'invisible', 'scale-95');
-      menu.classList.remove('opacity-100', 'visible', 'scale-100');
-    });
-  });
-});
-</script> 
+</nav> 

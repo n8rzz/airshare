@@ -100,21 +100,22 @@ RSpec.describe 'User Profile', type: :system do
   end
 
   describe 'navigation' do
-    it 'can access profile from navigation dropdown' do
+    let(:user) { create(:user) }
+
+    before do
+      sign_in user
       visit root_path
-      
-      find('button', text: user.email).click
+    end
+
+    it 'can access profile from navigation dropdown' do
+      find('label[for="dropdown-toggle"]').click
       click_link 'Profile'
-      
       expect(page).to have_current_path(user_path)
     end
 
     it 'can access account settings from navigation dropdown' do
-      visit root_path
-      
-      find('button', text: user.email).click
+      find('label[for="dropdown-toggle"]').click
       click_link 'Account Settings'
-      
       expect(page).to have_current_path(edit_user_registration_path)
     end
   end

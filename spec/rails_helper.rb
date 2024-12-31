@@ -84,16 +84,33 @@ RSpec.configure do |config|
     Warden.test_reset!
   end
 
-  # Include OmniAuth test helpers
   config.include OmniauthHelpers, type: :system
   config.include OmniauthHelpers, type: :request
-
   config.include ActiveSupport::Testing::TimeHelpers
-
   config.include Warden::Test::Helpers
+
+  OmniAuth.config.test_mode = true
+  
+  config.before(:each) do
+    OmniAuth.config.mock_auth[:google_oauth2] = nil
+  end
+
+  def mock_google_auth_hash
+    OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+      provider: 'google_oauth2',
+      uid: '123456789',
+      info: {
+        email: 'test@example.com',
+        name: 'Test User'
+      },
+      credentials: {
+        token: 'mock_token',
+        expires_at: 1.week.from_now.to_i
+      }
+    })
+  end
 end
 
-# Configure Shoulda Matchers
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
