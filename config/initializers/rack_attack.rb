@@ -16,7 +16,10 @@ class Rack::Attack
   throttle('password_resets/email', limit: 5, period: 1.hour) do |req|
     if req.path == '/users/password' && req.post?
       # Return the email if present, nil otherwise
-      req.params['user'].try(:[], 'email')&.downcase
+      if req.params.respond_to?(:to_unsafe_h)
+        params = req.params.to_unsafe_h
+        params.dig('user', 'email')&.downcase if params.present?
+      end
     end
   end
 

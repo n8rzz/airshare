@@ -331,15 +331,18 @@ RSpec.describe 'Authentication', type: :system do
       end
 
       it 'shows error with expired token' do
-        # Travel to future to expire token
-        travel 7.days do
-          visit edit_user_password_path(reset_password_token: token)
+        # Generate token and travel beyond the expiry window
+        token = user.send_reset_password_instructions
+        travel 7.hours do
+          # Ensure token is expired
+          user.update_column(:reset_password_sent_at, 7.hours.ago)
           
+          visit edit_user_password_path(reset_password_token: token)
           fill_in 'New password', with: 'newpassword123'
           fill_in 'Confirm new password', with: 'newpassword123'
           click_button 'Change my password'
           
-          expect(page).to have_text('Reset password token is invalid')
+          expect(page).to have_text('Reset password token has expired')
           expect(page).to have_current_path(user_password_path, ignore_query: true)
         end
       end
