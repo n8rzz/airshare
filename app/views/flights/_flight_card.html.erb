@@ -1,0 +1,82 @@
+<% duration = (flight.estimated_arrival_time - flight.departure_time) / 3600.0 %>
+<% now = Time.current %>
+<% 
+  # Position based on flight status
+  icon_position = case flight.status
+                 when 'in_air'
+                   50  # middle
+                 when 'completed'
+                   100 # right
+                 else
+                   0   # left for boarding/scheduled
+                 end
+
+  # Status pill colors
+  status_classes = case flight.status
+                  when 'scheduled'
+                    'bg-green-100 text-green-800'
+                  when 'cancelled'
+                    'bg-red-100 text-red-800'
+                  when 'in_air'
+                    'bg-orange-100 text-orange-800'
+                  else
+                    'bg-primary-100 text-primary-800'
+                  end
+%>
+
+<div class="p-6 hover:bg-gray-50">
+  <div class="flex justify-between items-center">
+    <!-- Left side: Times and locations -->
+    <div class="flex items-center space-x-16">
+      <!-- Departure info -->
+      <div class="text-center">
+        <div class="text-lg font-medium"><%= flight.origin %></div>
+        <div class="text-2xl text-gray-600 font-mono"><%= flight.departure_time.strftime("%H:%M") %></div>
+        <div class="text-sm text-gray-500 font-mono"><%= flight.departure_time.strftime("%a, %b %d") %></div>
+      </div>
+
+      <!-- Flight duration and path -->
+      <div class="flex flex-col items-center">
+        <div class="text-sm text-gray-500 mb-3 font-mono"><%= format("%.1fh", duration) %></div>
+        <div class="relative w-48">
+          <!-- Timeline -->
+          <div class="border-t-2 border-gray-300 absolute top-1/2 w-full"></div>
+          
+          <!-- Start circle -->
+          <div class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1">
+            <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+          </div>
+          
+          <!-- End circle -->
+          <div class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1">
+            <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+          </div>
+          
+          <!-- Progress circle -->
+          <div class="absolute top-1/2 transform -translate-y-1/2" style="left: <%= icon_position %>%">
+            <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrival info -->
+      <div class="text-center">
+        <div class="text-lg font-medium"><%= flight.destination %></div>
+        <div class="text-xl text-gray-600 font-mono"><%= flight.estimated_arrival_time.strftime("%H:%M") %></div>
+        <div class="text-sm text-gray-500 font-mono"><%= flight.estimated_arrival_time.strftime("%a, %b %d") %></div>
+      </div>
+    </div>
+
+    <!-- Right side: Status and action -->
+    <div class="flex items-center space-x-4">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= status_classes %>">
+        <%= flight.status.titleize %>
+      </span>
+      <%= link_to 'View Details', 
+                 flight_path(flight), 
+                 class: "inline-flex items-center px-4 py-2 border border-transparent text-sm 
+                        font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 
+                        focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" %>
+    </div>
+  </div>
+</div> 

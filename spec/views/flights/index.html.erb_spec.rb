@@ -39,8 +39,13 @@ RSpec.describe "flights/index", type: :view do
     render
 
     flights.each do |flight|
-      assert_select "h3", text: /#{flight.origin}.*#{flight.destination}/
-      assert_select "p", text: /#{flight.departure_time.strftime("%B %d, %Y")}/
+      # Check for origin and destination
+      assert_select "div.text-lg", text: flight.origin
+      assert_select "div.text-lg", text: flight.destination
+
+      # Check for dates
+      assert_select "div.text-sm", text: flight.departure_time.strftime("%a, %b %d")
+      assert_select "div.text-sm", text: flight.estimated_arrival_time.strftime("%a, %b %d")
     end
   end
 end 

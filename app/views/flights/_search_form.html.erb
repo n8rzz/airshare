@@ -1,0 +1,74 @@
+<%= form_with(url: flights_path, method: :get, class: "mb-8 bg-white shadow-lg rounded-lg p-6") do |f| %>
+  <div class="space-y-6">
+    <!-- Flight Search Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
+      <!-- Left Column -->
+      <div class="space-y-6">
+        <!-- From Field -->
+        <div class="relative">
+          <%= label_tag 'search[origin]', "From", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="iconoir-city h-5 w-5 text-gray-400"></i>
+            </div>
+            <%= text_field_tag 'search[query]', 
+                params.dig(:search, :query), 
+                placeholder: "Enter airport code (e.g. BOS)", 
+                class: "pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500" %>
+          </div>
+        </div>
+
+        <!-- Date and Passengers Row -->
+        <div class="flex space-x-4">
+          <div class="flex-1">
+            <%= label_tag 'search[date]', "Depart", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="iconoir-calendar h-5 w-5 text-gray-400"></i>
+              </div>
+              <%= date_field_tag 'search[date]', 
+                  params.dig(:search, :date), 
+                  class: "pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500" %>
+            </div>
+          </div>
+
+          <div>
+            <%= label_tag 'search[passengers]', "Passengers", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <div class="relative max-w-[100px]">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="iconoir-profile-circle h-5 w-5 text-gray-400"></i>
+              </div>
+              <%= number_field_tag 'search[passengers]',
+                  params.dig(:search, :passengers) || 1,
+                  min: 1,
+                  class: "pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500" %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="flex flex-col">
+        <!-- To Field -->
+        <div class="relative mb-6">
+          <%= label_tag 'search[destination]', "To", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="iconoir-city h-5 w-5 text-gray-400"></i>
+            </div>
+            <%= text_field_tag 'search[destination]', 
+                params.dig(:search, :destination), 
+                placeholder: "City or airport code", 
+                class: "pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500" %>
+          </div>
+        </div>
+
+        <!-- Find Button Container -->
+        <div class="flex justify-end mt-[27px]">
+          <%= submit_tag "Find", class: "w-[150px] px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 
+                     focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 hover:cursor-pointer" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %> 
