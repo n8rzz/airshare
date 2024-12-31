@@ -10,7 +10,11 @@ RSpec.describe 'Flight Access', type: :system do
 
     it 'allows viewing the flights index' do
       expect(page).to have_current_path(flights_path)
-      expect(page).to have_content('Available Flights')
+      expect(page).to have_field('search[query]')
+      expect(page).to have_field('search[destination]')
+      expect(page).to have_field('search[date]')
+      expect(page).to have_field('search[passengers]')
+      expect(page).to have_button('Find')
     end
 
     it 'shows flight details' do
