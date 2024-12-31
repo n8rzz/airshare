@@ -246,6 +246,10 @@ Devise.setup do |config|
   # Require the `devise-encryptable` gem when using anything other than bcrypt
   # config.encryptor = :sha512
 
+  # ==> Configuration for :token_authenticatable
+  # Defines name of the authentication token params key
+  # config.token_authentication_key = :auth_token
+
   # ==> Scopes configuration
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
   # "users/sessions/new". It's turned off by default because it's slower if you
@@ -315,5 +319,12 @@ Devise.setup do |config|
 
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing their password.
-  # config.sign_in_after_change_password = true
+  # config.sign_in_after_password_change = true
+
+  # Send password change notification email
+  config.send_password_change_notification = true
+
+  # Maximum attempts for password reset requests before rate limiting
+  # config.reset_password_limit = 5
+  # config.reset_password_time_window = 1.hour
 end

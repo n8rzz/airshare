@@ -151,8 +151,8 @@ RSpec.describe "Admin", type: :system do
       end
 
       it 'shows admin navigation links' do
-        expect(page).to have_link('Admin Dashboard')
-        expect(page).to have_css('.bg-purple-100', text: 'Admin')
+        expect(page).to have_link('Admin')
+        expect(page).to have_css('.bg-accent-100', text: 'Admin')
       end
     end
 

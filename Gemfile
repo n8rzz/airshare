@@ -16,6 +16,10 @@ gem "omniauth", "~> 2.1"
 gem "omniauth-google-oauth2", "~> 1.1"
 gem "omniauth-microsoft-office365", "~> 0.0.8"
 gem "omniauth-rails_csrf_protection", "~> 1.0" # For security
+
+# Security
+gem "rack-attack"
+
 gem "stimulus-rails"
 gem "tailwindcss-rails"
 gem "turbo-rails"
@@ -43,6 +47,7 @@ group :development do
 
   # Process manager for running multiple processes
   gem "foreman"
+  gem 'letter_opener'
 end
 
 group :test do

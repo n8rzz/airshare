@@ -13,7 +13,7 @@ RSpec.describe "Navigation", type: :system do
 
     it "shows shadow on other pages" do
       visit root_path
-      expect(page).to have_css("nav.shadow")
+      expect(page).to have_css("nav.shadow-sm")
     end
   end
 
