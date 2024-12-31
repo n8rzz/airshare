@@ -58,4 +58,34 @@ RSpec.describe "Navigation", type: :system do
       end
     end
   end
+
+  describe "user dropdown menu" do
+    let(:user) { create(:user) }
+
+    before do
+      sign_in user
+      visit root_path
+    end
+
+    it "shows user email and dropdown toggle" do
+      expect(page).to have_text(user.email)
+      expect(page).to have_css('[data-dropdown-toggle]')
+    end
+
+    it "toggles dropdown menu when clicked" do
+      find('[data-dropdown-toggle]').click
+      expect(page).to have_link('Profile')
+      expect(page).to have_link('Account Settings')
+      expect(page).to have_button('Sign out')
+    end
+
+    context "when user is admin" do
+      let(:user) { create(:user, :admin) }
+
+      it "shows admin link in dropdown" do
+        find('[data-dropdown-toggle]').click
+        expect(page).to have_link('Admin')
+      end
+    end
+  end
 end 
