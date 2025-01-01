@@ -87,4 +87,27 @@ RSpec.describe 'Flight Actions', type: :system do
       end
     end
   end
+
+  describe 'visitor to logged in user flow' do
+    let(:pilot) { create(:user, :pilot) }
+    let!(:pilot_flight) { create(:flight, pilot: pilot, status: 'scheduled') }
+    
+    it 'shows appropriate actions before and after login' do
+      # Start as non-logged in user on flights page
+      visit flights_path
+      expect(page).to have_link('View')
+      expect(page).not_to have_link('Edit')
+      expect(page).not_to have_link('Cancel')
+    
+      # Sign in and verify actions
+      sign_in pilot
+      visit flights_path
+      
+      within(find('tr', text: pilot_flight.origin)) do
+        expect(page).to have_link('View')
+        expect(page).to have_link('Edit')
+        expect(page).to have_link('Cancel')
+      end
+    end
+  end
 end 
