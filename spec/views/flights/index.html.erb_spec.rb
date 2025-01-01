@@ -31,7 +31,7 @@ RSpec.describe "flights/index", type: :view do
     assert_select "form[action=?][method=?]", flights_path, "get" do
       assert_select "input[name=?]", "search[query]"
       assert_select "input[name=?]", "search[date]"
-      assert_select "input[type=submit]"
+      assert_select "input[value=?]", "Search Flights"
     end
   end
 

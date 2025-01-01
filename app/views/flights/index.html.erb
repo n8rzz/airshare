@@ -1,5 +1,33 @@
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <%= render 'pilot_actions' %>
-  <%= render 'search_form' %>
+<!-- Hero Section with Search -->
+<div class="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700">
+  <!-- Decorative background pattern -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute transform rotate-45 translate-x-1/2 translate-y-1/2">
+      <div class="w-96 h-96 border-4 border-white rounded-full"></div>
+    </div>
+    <div class="absolute -top-24 -right-24 transform">
+      <div class="w-64 h-64 border-4 border-white rounded-full"></div>
+    </div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-2xl">
+      <h1 class="text-5xl font-bold mb-4 font-serif text-gray-800">Flights</h1>
+      <p class="text-xl mb-8 font-sans text-primary-50 leading-relaxed">
+        Search available flights or connect with pilots for your desired route.
+      </p>
+    </div>
+    <%= render 'search_form' %>
+  </div>
+</div>
+
+<!-- Content Section -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <% if current_user&.pilot? %>
+    <div class="py-6 flex justify-end">
+      <%= link_to 'New Flight', new_flight_path, class: "px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transform transition-all duration-200 hover:scale-105" %>
+    </div>
+  <% end %>
+
   <%= render 'flight_list' %>
 </div>
