@@ -5,7 +5,7 @@ RSpec.describe 'Flight Access', type: :system do
   
   describe 'as a visitor' do
     before do
-      visit flights_path
+      visit flights_path 
     end
 
     it 'allows viewing the flights index' do
@@ -14,7 +14,7 @@ RSpec.describe 'Flight Access', type: :system do
       expect(page).to have_field('search[destination]')
       expect(page).to have_field('search[date]')
       expect(page).to have_field('search[passengers]')
-      expect(page).to have_button('Find')
+      expect(page).to have_button('Search Flights')
     end
 
     it 'shows flight details' do
@@ -33,12 +33,12 @@ RSpec.describe 'Flight Access', type: :system do
       expect(page).not_to have_button('Book Flight')
       expect(page).not_to have_link('Book Now')
     end
-
+    
     it 'does not show flight creation options' do
       expect(page).not_to have_link('New Flight')
       expect(page).not_to have_button('Create Flight')
     end
-
+  
     it 'shows a sign in prompt when trying to book' do
       click_link "View"
       expect(page).to have_content('Sign in to book this flight')

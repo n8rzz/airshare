@@ -65,12 +65,10 @@
 
         <!-- Search Button -->
         <div class="flex justify-end mt-auto">
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <i class="iconoir-search h-5 w-5 text-white"></i>
-            </div>
-            <%= submit_tag "Search", 
-                class: "pl-10 px-6 py-2.5 bg-accent-500 hover:bg-accent-400 text-white rounded-md font-semibold shadow-lg hover:shadow-accent-500/50 transform transition-all duration-200 hover:scale-105" %>
+          <div class="relative flex items-center">
+            <i class="iconoir-search absolute left-3 h-5 w-5 text-white z-50"></i>
+            <%= submit_tag "Search Flights", 
+                class: "pl-10 pr-6 h-10 bg-accent-500 hover:bg-accent-400 text-white rounded-md font-semibold shadow-lg hover:shadow-accent-500/50 transform transition-all duration-200 hover:scale-105" %>
           </div>
         </div>
       </div>
