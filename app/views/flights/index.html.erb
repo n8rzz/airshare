@@ -12,7 +12,9 @@
 
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="max-w-2xl">
-      <h1 class="text-5xl font-bold mb-4 font-serif text-gray-800">Flights</h1>
+      <h1 class="text-5xl font-bold mb-4 font-serif text-gray-800">
+        Flights
+      </h1>
       <p class="text-xl mb-8 font-sans text-primary-50 leading-relaxed">
         Search available flights or connect with pilots for your desired route.
       </p>
@@ -24,10 +26,14 @@
 <!-- Content Section -->
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
   <% if current_user&.pilot? %>
-    <div class="py-6 flex justify-end">
+    <div class="py-4 flex justify-end">
       <%= link_to 'New Flight', new_flight_path, class: "px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transform transition-all duration-200 hover:scale-105" %>
     </div>
+  <% else %>
+    <div class="pt-8"></div>
   <% end %>
 
-  <%= render 'flight_list' %>
+  <div class="pb-8">
+    <%= render 'flight_list' %>
+  </div>
 </div>

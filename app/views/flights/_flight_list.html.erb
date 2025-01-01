@@ -59,7 +59,7 @@
                 <% if current_user&.admin? || current_user == flight.pilot %>
                   <%= link_to 'Edit', edit_flight_path(flight), class: "ml-3 text-primary-600 hover:text-primary-900" %>
                 <% end %>
-                <% if current_user&.admin? || current_user == flight.pilot %>
+                <% if (current_user&.admin? || current_user == flight.pilot) && flight.scheduled? %>
                   <%= link_to 'Cancel', flight_path(flight), 
                       data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
                       class: "ml-3 text-red-600 hover:text-red-900" %>
