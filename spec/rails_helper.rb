@@ -109,6 +109,9 @@ RSpec.configure do |config|
       }
     })
   end
+
+  config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Warden::Test::Helpers, type: :system
 end
 
 Shoulda::Matchers.configure do |config|
